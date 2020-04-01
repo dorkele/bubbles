@@ -2,7 +2,7 @@ import React from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
 
-export default class Registration extends React.Component {
+export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -56,6 +56,10 @@ export default class Registration extends React.Component {
                 <button onClick={() => this.login()}>Log in</button>
                 <div>
                     Not registered? <Link to="/">Register here.</Link>
+                </div>
+                <div>
+                    Forgot your password?
+                    <Link to="/reset">Click here to reset your password.</Link>
                 </div>
             </div>
         );

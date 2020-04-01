@@ -1,6 +1,7 @@
 import React from "react";
 import Registration from "./register";
 import Login from "./login";
+import ResetPassword from "./reset";
 import { HashRouter, Route } from "react-router-dom";
 
 export default function Welcome() {
@@ -18,6 +19,7 @@ export default function Welcome() {
                 <div>
                     <Route exact path="/" component={Registration} />
                     <Route path="/login" component={Login} />
+                    <Route path="/reset" component={ResetPassword} />
                 </div>
             </div>
         </HashRouter>

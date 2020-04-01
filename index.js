@@ -4,6 +4,8 @@ const compression = require("compression");
 const db = require("./utils/db");
 const { hash, compare } = require("./utils/bc");
 const csurf = require("csurf");
+const ses = require("./utils/ses");
+const cryptoRandomString = require("crypto-random-string");
 
 app.use(compression());
 app.use(
@@ -109,6 +111,103 @@ app.post("/login", (req, res) => {
         })
         .catch(error => {
             console.log("error in post login: ", error);
+            res.json({
+                success: false
+            });
+        });
+});
+
+app.post("/password/reset/start", (req, res) => {
+    console.log("i am now in POST /password/reset/start route");
+    console.log("req.body: ", req.body);
+    db.checkEmail(req.body.email)
+        .then(result => {
+            console.log("result in check Email: ", result.rows[0].exists);
+            if (result.rows[0].exists == true) {
+                const secretCode = cryptoRandomString({
+                    length: 6
+                });
+                let email = req.body.email;
+                db.insertCode(secretCode, email)
+                    .then(response => {
+                        console.log(response);
+
+                        ses.sendEmail(
+                            email,
+                            "Bubbles Verification Code",
+                            secretCode
+                        )
+                            .then(() => {
+                                console.log("working!");
+                                res.json({
+                                    success: true
+                                });
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                res.json({
+                                    success: false
+                                });
+                            });
+                    })
+                    .catch(error => {
+                        console.log("error in insertCode: ", error);
+                        res.json({
+                            success: false
+                        });
+                    });
+            } else {
+                res.json({
+                    success: false
+                });
+            }
+        })
+        .catch(error => {
+            console.log("error in db.check email: ", error);
+            res.json({
+                state: false
+            });
+        });
+});
+
+app.post("/password/reset/verify", (req, res) => {
+    console.log("i arrived in POST /password/reset/verify");
+    console.log("req.body.email&code: ", req.body.email, req.body.code);
+    db.findCode(req.body.email)
+        .then(result => {
+            console.log(result.rows);
+            let index = result.rows.length - 1;
+
+            if (result.rows[index].code == req.body.code) {
+                console.log("req.body.newPw: ", req.body.password);
+
+                hash(req.body.password)
+                    .then(hashedPw => {
+                        console.log("hashedPW", hashedPw);
+                        db.updateUser(req.body.email, hashedPw)
+                            .then(result => {
+                                console.log(result.rows);
+                                res.json({ success: true });
+                            })
+                            .catch(err => {
+                                res.json({
+                                    success: false
+                                });
+                                console.log("error in password catch: ", err);
+                            });
+                    })
+                    .catch(err => {
+                        console.log("error in Post register in hash", err);
+                        res.json({ success: false });
+                    });
+            } else {
+                res.json({
+                    success: false
+                });
+            }
+        })
+        .catch(error => {
+            console.log("error in find code: ", error);
             res.json({
                 success: false
             });

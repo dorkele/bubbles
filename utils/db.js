@@ -18,3 +18,35 @@ module.exports.getPass = email => {
     const params = [email];
     return db.query(q, params);
 };
+
+module.exports.checkEmail = email => {
+    const q = `SELECT EXISTS(
+        SELECT 1 FROM users WHERE users.email=$1
+    )`;
+    const params = [email];
+    return db.query(q, params);
+};
+
+module.exports.insertCode = (code, email) => {
+    const q = `INSERT INTO pw_reset_codes (code, email)
+    VALUES ($1, $2)
+    RETURNING *`;
+    const params = [code, email];
+    return db.query(q, params);
+};
+
+module.exports.findCode = email => {
+    const q = `SELECT * FROM pw_reset_codes
+    WHERE email=$1
+    AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'`;
+    const params = [email];
+    return db.query(q, params);
+};
+
+module.exports.updateUser = (email, hashedPw) => {
+    const q = `UPDATE users
+    SET password=$2
+    WHERE email=$1`;
+    const params = [email, hashedPw];
+    return db.query(q, params);
+};

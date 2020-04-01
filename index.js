@@ -3,6 +3,7 @@ const app = express();
 const compression = require("compression");
 const db = require("./utils/db");
 const { hash, compare } = require("./utils/bc");
+const csurf = require("csurf");
 
 app.use(compression());
 app.use(
@@ -17,6 +18,11 @@ app.use(
     })
 );
 app.use(express.json());
+app.use(csurf());
+app.use(function(req, res, next) {
+    res.cookie("mytoken", req.csrfToken());
+    next();
+});
 app.use(express.static("public"));
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -69,6 +75,43 @@ app.post("/register", (req, res) => {
         .catch(err => {
             console.log("error in Post register in hash", err);
             res.json({ success: false });
+        });
+});
+
+app.post("/login", (req, res) => {
+    console.log("/POST LOGIN");
+    console.log("req.body: ", req.body);
+    db.getPass(req.body.email)
+        .then(result => {
+            const hashedPw = result.rows[0].password;
+            const password = req.body.pass;
+            const id = result.rows[0].id;
+            console.log(hashedPw, password);
+
+            compare(password, hashedPw)
+                .then(matchValue => {
+                    if (matchValue == true) {
+                        console.log("result.rows[0].id: ", result.rows[0].id);
+                        req.session.userId = id;
+                        res.json({
+                            success: true
+                        });
+                    } else {
+                        res.json({ success: false });
+                    }
+                })
+                .catch(error => {
+                    console.log("error in POST login compare", error);
+                    res.json({
+                        success: false
+                    });
+                });
+        })
+        .catch(error => {
+            console.log("error in post login: ", error);
+            res.json({
+                success: false
+            });
         });
 });
 

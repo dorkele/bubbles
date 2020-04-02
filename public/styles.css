@@ -38,3 +38,13 @@ button {
 .small-logo {
     width: 200px;
 }
+
+.app {
+    display: flex;
+    flex-direction: row;
+    justify-items: space-between;
+}
+
+.prof-pic {
+    height: 50px;
+}

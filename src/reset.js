@@ -79,50 +79,43 @@ export default class ResetPassword extends React.Component {
         let reset;
         if (step == "email") {
             reset = (
-                <form>
-                    <div className="form">
-                        {/* probati ovo sto se ponavlja maknuti iz onoga sto se mijenja */}
-                        <p>Reset password</p>
-                        {this.state.error && (
-                            <div>Oops, something went wrong!</div>
-                        )}
-                        <p>To reset password please enter your e-mail:</p>
+                <div className="form">
+                    {/* probati ovo sto se ponavlja maknuti iz onoga sto se mijenja */}
+                    <p>Reset password</p>
+                    {this.state.error && <div>Oops, something went wrong!</div>}
+                    <p>To reset password please enter your e-mail:</p>
 
-                        <input
-                            name="email"
-                            placeholder="e-mail"
-                            onChange={e => this.handleChange(e)}
-                        />
-                        <button onClick={e => this.submitEmail(e)}>
-                            Submit
-                        </button>
-                    </div>
-                </form>
+                    <input
+                        name="email"
+                        placeholder="e-mail"
+                        key="email"
+                        onChange={e => this.handleChange(e)}
+                    />
+                    <button onClick={e => this.submitEmail(e)}>Submit</button>
+                </div>
             );
         } else if (step == "code") {
             reset = (
                 <div className="form">
                     <p>Reset Password</p>
                     {this.state.error && <div>Oops, something went wrong!</div>}
-                    <form>
-                        <p>Please enter the verification code:</p>
+                    <p>Please enter the verification code:</p>
 
-                        <input
-                            name="code"
-                            placeholder="verification code"
-                            onChange={e => this.handleChange(e)}
-                        />
-                        <p>Please enter your new password:</p>
-                        <input
-                            name="newPw"
-                            placeholder="new password"
-                            type="password"
-                            onChange={e => this.handleChange(e)}
-                        />
-                        <button onClick={e => this.verifyCode(e)}>
-                            Submit
-                        </button>
-                    </form>
+                    <input
+                        name="code"
+                        key="code"
+                        placeholder="verification code"
+                        onChange={e => this.handleChange(e)}
+                    />
+                    <p>Please enter your new password:</p>
+                    <input
+                        name="newPw"
+                        key="newPw"
+                        placeholder="new password"
+                        type="password"
+                        onChange={e => this.handleChange(e)}
+                    />
+                    <button onClick={e => this.verifyCode(e)}>Submit</button>
                 </div>
             );
         } else if (step == "success") {

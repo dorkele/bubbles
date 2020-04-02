@@ -6,7 +6,31 @@ const { hash, compare } = require("./utils/bc");
 const csurf = require("csurf");
 const ses = require("./utils/ses");
 const cryptoRandomString = require("crypto-random-string");
+const s3 = require("./s3");
+const conf = require("./config");
+//////////FILE UPLOAD///////////
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+const path = require("path");
 
+const diskStorage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function(req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    }
+});
+
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
+});
+////////////////////////////////////////
 app.use(compression());
 app.use(
     require("cookie-session")({
@@ -19,6 +43,7 @@ app.use(
         extended: false
     })
 );
+
 app.use(express.json());
 app.use(csurf());
 app.use(function(req, res, next) {
@@ -211,6 +236,40 @@ app.post("/password/reset/verify", (req, res) => {
             res.json({
                 success: false
             });
+        });
+});
+
+app.get("/user", (req, res) => {
+    console.log("i am in GET user route");
+    console.log("req.session.userId: ", req.session.userId);
+    const id = req.session.userId;
+    db.getUserInfo(id)
+        .then(result => {
+            console.log("result.rows in getUserInfo: ", result.rows);
+            res.json(result.rows);
+        })
+        .catch(error => {
+            console.log("error in getUserInfo: ", error);
+        });
+});
+
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    console.log("i am in POST upload route");
+
+    let userId = req.session.userId;
+    let imageUrl = conf.s3Url + req.file.filename;
+    console.log("imageUrl: ", imageUrl);
+
+    db.addProfPic(imageUrl, userId)
+        .then(response => {
+            console.log("response in insert prof pic: ", response);
+            res.json({
+                success: true,
+                imgUrl: imageUrl
+            });
+        })
+        .catch(error => {
+            console.log("error in insert prof pic: ", error);
         });
 });
 

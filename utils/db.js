@@ -50,3 +50,18 @@ module.exports.updateUser = (email, hashedPw) => {
     const params = [email, hashedPw];
     return db.query(q, params);
 };
+
+module.exports.getUserInfo = id => {
+    const q = `SELECT * FROM users
+    WHERE id=$1`;
+    const params = [id];
+    return db.query(q, params);
+};
+
+module.exports.addProfPic = (imgUrl, id) => {
+    const q = `UPDATE users
+    SET img_url=$1
+    WHERE id=$2`;
+    const params = [imgUrl, id];
+    return db.query(q, params);
+};

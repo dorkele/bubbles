@@ -273,6 +273,11 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
         });
 });
 
+app.post("/bio", (req, res) => {
+    console.log("made it to POST bio");
+    console.log("req.body u post bio: ", req.body);
+});
+
 app.get("*", (req, res) => {
     if (req.session.userId) {
         res.sendFile(__dirname + "/index.html");

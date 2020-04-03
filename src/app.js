@@ -3,6 +3,7 @@ import axios from "./axios";
 import ProfilePic from "./profile-pic";
 import Uploader from "./uploader";
 import Logo from "./logo";
+import Profile from "./profile";
 
 export default class App extends React.Component {
     constructor() {
@@ -50,6 +51,12 @@ export default class App extends React.Component {
         });
     }
 
+    setBio(newBio) {
+        this.setState({
+            bio: newBio
+        });
+    }
+
     render() {
         console.log("this.state u render: ", this.state);
 
@@ -58,9 +65,16 @@ export default class App extends React.Component {
                 <Logo />
                 <ProfilePic
                     first={this.state.first}
-                    imgUrl={this.state.imgUrl}
                     last={this.state.last}
+                    imgUrl={this.state.imgUrl}
                     toggleModal={() => this.toggleModal()}
+                />
+                <Profile
+                    first={this.state.first}
+                    last={this.state.last}
+                    bio={this.state.bio}
+                    toggleModal={() => this.toggleModal()}
+                    setBio={() => this.setBio()}
                 />
                 {this.state.uploaderIsVisible && (
                     <Uploader setImgUrl={imgUrl => this.setImgUrl(imgUrl)} />

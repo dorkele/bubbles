@@ -2,8 +2,8 @@ import React from "react";
 import axios from "./axios";
 
 export default class Uploader extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {};
     }
     componentDidMount() {
@@ -18,9 +18,9 @@ export default class Uploader extends React.Component {
         });
     }
 
-    uploadImage() {
+    uploadImage(e) {
         console.log("I am upload image in uploader");
-        // e.preventDefault();
+        e.preventDefault();
         // console.log(this.state.file);
         var formData = new FormData();
 
@@ -39,7 +39,6 @@ export default class Uploader extends React.Component {
     }
 
     render() {
-        console.log("this.props: ", this.props);
         return (
             <React.Fragment>
                 <h3>Set new profile picture!</h3>
@@ -51,7 +50,7 @@ export default class Uploader extends React.Component {
                 />
                 <label htmlFor="file">Choose a file</label>
 
-                <button onClick={() => this.uploadImage()}>Click me!</button>
+                <button onClick={e => this.uploadImage(e)}>Click me!</button>
             </React.Fragment>
         );
     }

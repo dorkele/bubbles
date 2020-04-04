@@ -6,20 +6,20 @@ export default class BioEditor extends React.Component {
         super(props);
         this.state = {
             bioEditorIsVisible: false,
-            bioInProgress: ""
+            bioInProgress: "",
         };
     }
 
     toggleTextarea() {
         this.setState({
-            bioEditorIsVisible: !this.state.bioEditorIsVisible
+            bioEditorIsVisible: !this.state.bioEditorIsVisible,
         });
     }
 
     handleChange({ target }) {
         console.log("textarea.value", target.value);
         this.setState({
-            bioInProgress: target.value
+            bioInProgress: target.value,
         });
     }
 
@@ -28,10 +28,15 @@ export default class BioEditor extends React.Component {
         console.log("about to make post request", this.state.bioInProgress);
         axios
             .post("/bio", { newBio: this.state.bioInProgress })
-            .then(response => {
-                console.log("response in post bio: ", response);
+            .then(({ data }) => {
+                console.log("response in post bio: ", data.newBio);
+                let newBio = data.newBio;
+                this.props.setBio(newBio);
+                this.setState({
+                    bioEditorIsVisible: false,
+                });
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log("error in post bio: ", error);
             });
     }
@@ -45,11 +50,11 @@ export default class BioEditor extends React.Component {
             <div>
                 <textarea
                     name="textarea"
-                    onChange={e => {
+                    onChange={(e) => {
                         this.handleChange(e);
                     }}
                 ></textarea>
-                <button onClick={e => this.updateBio(e)}>Save</button>
+                <button onClick={(e) => this.updateBio(e)}>Save</button>
             </div>
         );
         if (
@@ -67,7 +72,7 @@ export default class BioEditor extends React.Component {
         ) {
             editBio = (
                 <div>
-                    this.props.bio
+                    {this.props.bio}
                     <button onClick={() => this.toggleTextarea()}>
                         Edit bio.
                     </button>

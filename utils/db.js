@@ -12,14 +12,14 @@ module.exports.insertUser = (first, last, email, password) => {
     return db.query(q, params);
 };
 
-module.exports.getPass = email => {
+module.exports.getPass = (email) => {
     const q = `SELECT id, password FROM users
     WHERE email=$1`;
     const params = [email];
     return db.query(q, params);
 };
 
-module.exports.checkEmail = email => {
+module.exports.checkEmail = (email) => {
     const q = `SELECT EXISTS(
         SELECT 1 FROM users WHERE users.email=$1
     )`;
@@ -35,7 +35,7 @@ module.exports.insertCode = (code, email) => {
     return db.query(q, params);
 };
 
-module.exports.findCode = email => {
+module.exports.findCode = (email) => {
     const q = `SELECT * FROM pw_reset_codes
     WHERE email=$1
     AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'`;
@@ -51,7 +51,7 @@ module.exports.updateUser = (email, hashedPw) => {
     return db.query(q, params);
 };
 
-module.exports.getUserInfo = id => {
+module.exports.getUserInfo = (id) => {
     const q = `SELECT * FROM users
     WHERE id=$1`;
     const params = [id];
@@ -63,5 +63,13 @@ module.exports.addProfPic = (imgUrl, id) => {
     SET img_url=$1
     WHERE id=$2`;
     const params = [imgUrl, id];
+    return db.query(q, params);
+};
+
+module.exports.addBio = (newBio, id) => {
+    const q = `UPDATE users
+    SET bio=$1
+    WHERE id=$2`;
+    const params = [newBio, id];
     return db.query(q, params);
 };

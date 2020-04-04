@@ -9,7 +9,7 @@ export default class App extends React.Component {
     constructor() {
         super();
         this.state = {
-            uploaderIsVisible: false
+            uploaderIsVisible: false,
         };
     }
 
@@ -27,11 +27,11 @@ export default class App extends React.Component {
                     password: data[0].password,
                     bio: data[0].bio,
                     imgUrl: data[0].img_url,
-                    timestamp: data[0].created_at
+                    timestamp: data[0].created_at,
                 });
                 console.log("this.state: ", this.state);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log("error in cdm in app: ", error);
             });
     }
@@ -39,7 +39,7 @@ export default class App extends React.Component {
     toggleModal() {
         console.log("toggleModal is running");
         this.setState({
-            uploaderIsVisible: !this.state.uploaderIsVisible
+            uploaderIsVisible: !this.state.uploaderIsVisible,
         });
     }
 
@@ -47,13 +47,13 @@ export default class App extends React.Component {
         console.log("reached the parent with imgUrl:  ", url);
         this.setState({
             imgUrl: url,
-            uploaderIsVisible: false
+            uploaderIsVisible: false,
         });
     }
 
     setBio(newBio) {
         this.setState({
-            bio: newBio
+            bio: newBio,
         });
     }
 
@@ -73,11 +73,12 @@ export default class App extends React.Component {
                     first={this.state.first}
                     last={this.state.last}
                     bio={this.state.bio}
+                    imgUrl={this.state.imgUrl}
                     toggleModal={() => this.toggleModal()}
-                    setBio={() => this.setBio()}
+                    setBio={(newBio) => this.setBio(newBio)}
                 />
                 {this.state.uploaderIsVisible && (
-                    <Uploader setImgUrl={imgUrl => this.setImgUrl(imgUrl)} />
+                    <Uploader setImgUrl={(imgUrl) => this.setImgUrl(imgUrl)} />
                 )}
             </div>
         );

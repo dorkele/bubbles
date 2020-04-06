@@ -4,6 +4,8 @@ import ProfilePic from "./profile-pic";
 import Uploader from "./uploader";
 import Logo from "./logo";
 import Profile from "./profile";
+import { BrowserRouter, Route } from "react-router-dom";
+import OtherProfile from "./otherprofile.js";
 
 export default class App extends React.Component {
     constructor() {
@@ -61,26 +63,40 @@ export default class App extends React.Component {
         console.log("this.state u render: ", this.state);
 
         return (
-            <div className="app">
-                <Logo />
-                <ProfilePic
-                    first={this.state.first}
-                    last={this.state.last}
-                    imgUrl={this.state.imgUrl}
-                    toggleModal={() => this.toggleModal()}
-                />
-                <Profile
-                    first={this.state.first}
-                    last={this.state.last}
-                    bio={this.state.bio}
-                    imgUrl={this.state.imgUrl}
-                    toggleModal={() => this.toggleModal()}
-                    setBio={(newBio) => this.setBio(newBio)}
-                />
-                {this.state.uploaderIsVisible && (
-                    <Uploader setImgUrl={(imgUrl) => this.setImgUrl(imgUrl)} />
-                )}
-            </div>
+            <BrowserRouter>
+                <div className="app">
+                    <div className="header">
+                        <Logo />
+                        <ProfilePic
+                            first={this.state.first}
+                            last={this.state.last}
+                            imgUrl={this.state.imgUrl}
+                            toggleModal={() => this.toggleModal()}
+                        />
+                    </div>
+
+                    <Route path="/user/:id" component={OtherProfile} />
+                    <Route
+                        exact
+                        path="/"
+                        render={() => (
+                            <Profile
+                                first={this.state.first}
+                                last={this.state.last}
+                                bio={this.state.bio}
+                                imgUrl={this.state.imgUrl}
+                                toggleModal={() => this.toggleModal()}
+                                setBio={(newBio) => this.setBio(newBio)}
+                            />
+                        )}
+                    />
+                    {this.state.uploaderIsVisible && (
+                        <Uploader
+                            setImgUrl={(imgUrl) => this.setImgUrl(imgUrl)}
+                        />
+                    )}
+                </div>
+            </BrowserRouter>
         );
     }
 }

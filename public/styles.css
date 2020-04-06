@@ -36,9 +36,22 @@ button {
 }
 
 .small-logo {
-    width: 200px;
+    width: 100px;
 }
 
 .prof-pic {
     height: 50px;
+}
+
+.app {
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    padding: 20px 20px;
+    border-bottom: lightskyblue 2px solid;
 }

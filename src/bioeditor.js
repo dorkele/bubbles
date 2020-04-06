@@ -58,7 +58,7 @@ export default class BioEditor extends React.Component {
             </div>
         );
         if (
-            this.props.bio == undefined &&
+            (this.props.bio == undefined || this.props.bio == "") &&
             this.state.bioEditorIsVisible == false
         ) {
             editBio = (

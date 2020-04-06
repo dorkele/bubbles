@@ -253,6 +253,21 @@ app.get("/user", (req, res) => {
         });
 });
 
+app.get("/user/:id.json", (req, res) => {
+    if (req.params.id == req.session.userId) {
+        res.json({
+            redirect: true,
+        });
+    }
+    db.getUserInfo(req.params.id).then(({ rows }) =>
+        res.json(
+            rows[0] || {
+                redirect: true,
+            }
+        )
+    );
+});
+
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     console.log("i am in POST upload route");
 

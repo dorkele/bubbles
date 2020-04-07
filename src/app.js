@@ -6,6 +6,7 @@ import Logo from "./logo";
 import Profile from "./profile";
 import { BrowserRouter, Route } from "react-router-dom";
 import OtherProfile from "./otherprofile.js";
+import FindPeople from "./findpeople";
 
 export default class App extends React.Component {
     constructor() {
@@ -99,6 +100,7 @@ export default class App extends React.Component {
                             />
                         )}
                     />
+                    <Route path="/users" component={FindPeople} />
                     {this.state.uploaderIsVisible && (
                         <Uploader
                             setImgUrl={(imgUrl) => this.setImgUrl(imgUrl)}

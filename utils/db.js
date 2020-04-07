@@ -73,3 +73,10 @@ module.exports.addBio = (newBio, id) => {
     const params = [newBio, id];
     return db.query(q, params);
 };
+
+module.exports.getUsers = () => {
+    const q = `SELECT * FROM users
+     ORDER BY created_at DESC 
+     LIMIT 3;`;
+    return db.query(q);
+};

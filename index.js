@@ -312,6 +312,19 @@ app.post("/bio", (req, res) => {
         });
 });
 
+app.get("/users.json", (req, res) => {
+    console.log("made it to GET users route");
+    // let users = [];
+    db.getUsers()
+        .then((result) => {
+            console.log("result in get users: ", result.rows);
+            res.json(result.rows);
+        })
+        .catch((error) => {
+            console.log("error in get users: ", error);
+        });
+});
+
 app.get("*", (req, res) => {
     if (req.session.userId) {
         res.sendFile(__dirname + "/index.html");

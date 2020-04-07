@@ -12,13 +12,21 @@ export default class OtherProfile extends React.Component {
 
         axios
             .get(`/user/${id}.json`)
-            .then((data) => {
-                console.log("data in GET user id json: ", data);
+            .then(({ data }) => {
+                console.log("data in GET user id json: ", data[0]);
 
                 if (data.redirect) {
+                    console.log("REDIRECT!!!!!!!!");
+
                     this.props.history.push("/");
                 } else {
-                    this.setState(data);
+                    this.setState({
+                        id: data[0].id,
+                        first: data[0].first,
+                        last: data[0].last,
+                        imgUrl: data[0].img_url,
+                        bio: data[0].bio,
+                    });
                 }
             })
             .catch((error) => console.log("error in cdm otherprofile", error));

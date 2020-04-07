@@ -254,18 +254,24 @@ app.get("/user", (req, res) => {
 });
 
 app.get("/user/:id.json", (req, res) => {
+    console.log("req.params user id json: ", req.params);
+
     if (req.params.id == req.session.userId) {
         res.json({
             redirect: true,
         });
+    } else {
+        db.getUserInfo(req.params.id).then((result) => {
+            console.log("result in get user info id json: ", result.rows);
+
+            res.json(
+                result.rows
+                // || {
+                //     redirect: true,
+                // }
+            );
+        });
     }
-    db.getUserInfo(req.params.id).then(({ rows }) =>
-        res.json(
-            rows[0] || {
-                redirect: true,
-            }
-        )
-    );
 });
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {

@@ -23,12 +23,31 @@ export default function FindPeople() {
                     error
                 );
             });
+    }, []);
+
+    useEffect(() => {
+        console.log("results for input");
+        console.log("input: ", input);
+
+        axios
+            .get("/findusers", { params: { val: input } }) /////shvatiti route
+            .then((response) => {
+                console.log(
+                    "response in useeffect matching people component: ",
+                    response.data
+                );
+                setUsers(response.data);
+            })
+            .catch((error) => {
+                console.log(
+                    "error in useeffect matching people component: ",
+                    error
+                );
+            });
         // return () => {
         //     cleanup;
         // };
     }, [input]);
-
-    console.log("input: ", input);
 
     const handleChange = (e) => {
         setInput(e.target.value);
@@ -36,6 +55,10 @@ export default function FindPeople() {
 
     return (
         <React.Fragment>
+            <input
+                onChange={handleChange}
+                placeholder="type to find people"
+            ></input>
             {users.map((user) => {
                 return (
                     <div key={user.id}>
@@ -46,10 +69,6 @@ export default function FindPeople() {
                     </div>
                 );
             })}
-            <input
-                onChange={handleChange}
-                placeholder="type to find people"
-            ></input>
         </React.Fragment>
     );
 }

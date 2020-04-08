@@ -312,28 +312,33 @@ app.post("/bio", (req, res) => {
         });
 });
 
-app.get("/users.json", (req, res) => {
-    console.log("made it to GET users.json route");
-    db.getLastUsers()
-        .then((result) => {
-            console.log("result in get users: ", result.rows);
-            res.json(result.rows);
-        })
-        .catch((error) => {
-            console.log("error in get users: ", error);
-        });
-});
+// app.get("/users.json", (req, res) => {
+//     console.log("made it to GET users.json route");
+// });
 
 app.get("/findusers", (req, res) => {
     console.log("made it to GET users route");
     console.log("req: ", req.query.val);
 
-    db.getMatchingUsers(req.query.val)
-        .then((result) => {
-            console.log("result in get matching users: ", result.rows);
-            res.json(result.rows);
-        })
-        .catch((error) => console.log("error in get matching users: ", error));
+    if (req.query.val == "") {
+        db.getLastUsers()
+            .then((result) => {
+                console.log("result in get users: ", result.rows);
+                res.json(result.rows);
+            })
+            .catch((error) => {
+                console.log("error in get users: ", error);
+            });
+    } else {
+        db.getMatchingUsers(req.query.val)
+            .then((result) => {
+                console.log("result in get matching users: ", result.rows);
+                res.json(result.rows);
+            })
+            .catch((error) =>
+                console.log("error in get matching users: ", error)
+            );
+    }
 });
 
 app.get("*", (req, res) => {

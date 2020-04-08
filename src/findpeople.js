@@ -6,29 +6,10 @@ export default function FindPeople() {
     const [input, setInput] = useState("");
 
     useEffect(() => {
-        console.log("component has mounted");
-
-        axios
-            .get("/users.json") /////shvatiti route
-            .then((response) => {
-                console.log(
-                    "response in useeffect find people component: ",
-                    response.data
-                );
-                setUsers(response.data);
-            })
-            .catch((error) => {
-                console.log(
-                    "error in useeffect find people component: ",
-                    error
-                );
-            });
-    }, []);
-
-    useEffect(() => {
         console.log("results for input");
         console.log("input: ", input);
 
+        let cleanup = false;
         axios
             .get("/findusers", { params: { val: input } }) /////shvatiti route
             .then((response) => {
@@ -36,7 +17,10 @@ export default function FindPeople() {
                     "response in useeffect matching people component: ",
                     response.data
                 );
-                setUsers(response.data);
+
+                if (!cleanup) {
+                    setUsers(response.data);
+                }
             })
             .catch((error) => {
                 console.log(
@@ -44,9 +28,10 @@ export default function FindPeople() {
                     error
                 );
             });
-        // return () => {
-        //     cleanup;
-        // };
+
+        return () => {
+            cleanup = true;
+        };
     }, [input]);
 
     const handleChange = (e) => {

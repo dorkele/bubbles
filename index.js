@@ -312,10 +312,6 @@ app.post("/bio", (req, res) => {
         });
 });
 
-// app.get("/users.json", (req, res) => {
-//     console.log("made it to GET users.json route");
-// });
-
 app.get("/findusers", (req, res) => {
     console.log("made it to GET users route");
     console.log("req: ", req.query.val);
@@ -339,6 +335,74 @@ app.get("/findusers", (req, res) => {
                 console.log("error in get matching users: ", error)
             );
     }
+});
+
+app.get("/initial-friendship-status/:id", (req, res) => {
+    console.log("made it to the GET initial friendship status route");
+    console.log("req.session.userId: ", req.session.userId);
+    console.log("req.params: ", req.params);
+
+    let userId = req.session.userId;
+    let otherId = req.params.id;
+
+    db.getInitialStatus(userId, otherId)
+        .then((result) => {
+            console.log("result in select initial status: ", result.rows);
+            res.json(result.rows);
+        })
+        .catch((error) =>
+            console.log("error in select initial status: ", error)
+        );
+});
+
+app.post("/make-friend-request/:id", (req, res) => {
+    console.log("made it to the POST make friend request routes");
+
+    let userId = req.session.userId;
+    let otherId = req.params.id;
+
+    db.makeFriendRequest(userId, otherId)
+        .then((result) => {
+            console.log("result in makefriendrequest: ", result.rows);
+            res.json(result.rows);
+        })
+        .catch((error) => {
+            console.log("error in make friend request: ", error);
+        });
+});
+
+app.post("/end-friendship/:id", (req, res) => {
+    console.log("made it to cancel end friendship");
+
+    let userId = req.session.userId;
+    let otherId = req.params.id;
+    db.deleteFriendship(userId, otherId)
+        .then((result) => {
+            console.log(result.rows);
+            res.json(result.rows);
+        })
+        .catch((error) => {
+            console.log("error in cancel end friendship: ", error);
+        });
+});
+
+app.post("/add-friendship/:id", (req, res) => {
+    console.log("made it to the add friendship route");
+    let userId = req.session.userId;
+    let otherId = req.params.id;
+    db.addFriendship(userId, otherId)
+        .then((result) => {
+            console.log("result in add freindship: ", result.rows);
+            res.json(result.rows);
+        })
+        .catch((error) => {
+            console.log("error in add friendship: ", error);
+        });
+});
+
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/login");
 });
 
 app.get("*", (req, res) => {

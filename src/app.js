@@ -4,7 +4,7 @@ import ProfilePic from "./profile-pic";
 import Uploader from "./uploader";
 import Logo from "./logo";
 import Profile from "./profile";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 import OtherProfile from "./otherprofile.js";
 import FindPeople from "./findpeople";
 
@@ -68,12 +68,14 @@ export default class App extends React.Component {
                 <div className="app">
                     <div className="header">
                         <Logo />
+                        <Link to="/users">Find People</Link>
                         <ProfilePic
                             first={this.state.first}
                             last={this.state.last}
                             imgUrl={this.state.imgUrl}
                             toggleModal={() => this.toggleModal()}
                         />
+                        <Link to="/logout">Log Out</Link>
                     </div>
 
                     <Route

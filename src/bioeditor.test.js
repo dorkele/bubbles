@@ -15,10 +15,14 @@ test("When a bio is passed to it, an 'Edit' button is rendered.", () => {
 test("Clicking either the 'Add' or 'Edit' button causes a textarea and a 'Save' button to be rendered.", () => {
     const { container } = render(<BioEditor /> || <BioEditor bio="My Bio" />);
     fireEvent.click(container.querySelector("button"));
-    expect(container.querySelector("button").innerHTML).toBe("Save");
-    expect(container.querySelector("textarea").getAttribute("name")).toBe(
-        "textarea"
-    );
+    expect(container.querySelector("button").children).toContain([
+        <textarea name="textarea" />,
+        <button>Save</button>,
+    ]);
+    // expect(container.querySelector("textarea").getAttribute("name")).toBe(
+    //     "textarea"
+    // );
+    //
 });
 
 // 4. Clicking the "Save" button causes an ajax request. The request should not actually happen during your test.

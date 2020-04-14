@@ -379,7 +379,8 @@ app.post("/end-friendship/:id", (req, res) => {
     db.deleteFriendship(userId, otherId)
         .then((result) => {
             console.log(result.rows);
-            res.json(result.rows);
+            //res.json(result.rows);
+            res.json(otherId);
         })
         .catch((error) => {
             console.log("error in cancel end friendship: ", error);

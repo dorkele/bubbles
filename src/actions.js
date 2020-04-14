@@ -12,3 +12,13 @@ export function receiveFriendsWannabes() {
         };
     });
 }
+
+export function unfriend(id) {
+    return axios.post(`/end-friendship/${id}`).then((response) => {
+        console.log("data from end friendship in actions: ", response.data);
+        return {
+            type: "UNFRIEND",
+            id: response.data,
+        };
+    });
+}

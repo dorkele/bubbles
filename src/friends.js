@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { receiveFriendsWannabes } from "./actions";
+import { receiveFriendsWannabes, unfriend } from "./actions";
 import { Link } from "react-router-dom";
 
 export default function Friends(props) {
@@ -25,33 +25,16 @@ export default function Friends(props) {
     useEffect(() => {
         dispatch(receiveFriendsWannabes());
         console.log("dispatching receivefriendswannabes");
-    }, []);
+    });
+
+    const acceptFriend = (e) => {
+        e.preventDefault();
+    };
 
     return (
         <React.Fragment>
             <div>
                 <p>People who want to explore your bubble:</p>
-                <div>
-                    {friends &&
-                        friends.map((friend) => {
-                            return (
-                                <div key={friend.id}>
-                                    <Link to={"/user/" + friend.id}>
-                                        <img src="{friend.img_url}" />
-                                        <p>
-                                            {friend.first} {friend.last}
-                                        </p>
-                                    </Link>
-                                    <button onClick={endFriendship}>
-                                        End Friendship
-                                    </button>
-                                </div>
-                            );
-                        })}
-                </div>
-            </div>
-            <div>
-                <p>People whose bubbles you can explore:</p>
                 <div>
                     {wannabes &&
                         wannabes.map((wannabe) => {
@@ -65,6 +48,31 @@ export default function Friends(props) {
                                     </Link>
                                     <button onClick={acceptFriend}>
                                         Accept Friend Request
+                                    </button>
+                                </div>
+                            );
+                        })}
+                </div>
+            </div>
+            <div>
+                <p>People whose bubbles you can explore:</p>
+                <div>
+                    {friends &&
+                        friends.map((friend) => {
+                            return (
+                                <div key={friend.id}>
+                                    <Link to={"/user/" + friend.id}>
+                                        <img src={friend.img_url} />
+                                        <p>
+                                            {friend.first} {friend.last}
+                                        </p>
+                                    </Link>
+                                    <button
+                                        onClick={() =>
+                                            dispatch(unfriend(friend.id))
+                                        }
+                                    >
+                                        End Friendship
                                     </button>
                                 </div>
                             );

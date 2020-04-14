@@ -400,6 +400,19 @@ app.post("/add-friendship/:id", (req, res) => {
         });
 });
 
+app.get("/friends-wannabes", (req, res) => {
+    console.log("i am in GET friends-wannabes route");
+    let id = req.session.userId;
+    db.getFriendsWannabes(id)
+        .then((result) => {
+            console.log("result in friends-wannabes: ", result.rows);
+            res.json(result.rows);
+        })
+        .catch((error) => {
+            console.log("error in friends-wannabes: ", error);
+        });
+});
+
 app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("*");

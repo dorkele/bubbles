@@ -7,6 +7,7 @@ import Profile from "./profile";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import OtherProfile from "./otherprofile.js";
 import FindPeople from "./findpeople";
+import Friends from "./friends";
 
 export default class App extends React.Component {
     constructor() {
@@ -76,6 +77,7 @@ export default class App extends React.Component {
                             toggleModal={() => this.toggleModal()}
                         />
                         <Link to="/logout">Log Out</Link>
+                        <Link to="/friends">Friends</Link>
                     </div>
 
                     <Route
@@ -103,6 +105,7 @@ export default class App extends React.Component {
                         )}
                     />
                     <Route path="/users" component={FindPeople} />
+                    <Route path="/friends" component={Friends} />
                     {this.state.uploaderIsVisible && (
                         <Uploader
                             setImgUrl={(imgUrl) => this.setImgUrl(imgUrl)}

@@ -402,7 +402,7 @@ app.post("/add-friendship/:id", (req, res) => {
 
 app.get("/logout", (req, res) => {
     req.session = null;
-    res.redirect("/login");
+    res.redirect("*");
 });
 
 app.get("*", (req, res) => {

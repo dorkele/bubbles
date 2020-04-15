@@ -394,7 +394,7 @@ app.post("/add-friendship/:id", (req, res) => {
     db.addFriendship(userId, otherId)
         .then((result) => {
             console.log("result in add freindship: ", result.rows);
-            res.json(result.rows);
+            res.json(otherId);
         })
         .catch((error) => {
             console.log("error in add friendship: ", error);

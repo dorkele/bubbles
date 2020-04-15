@@ -1,35 +1,32 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { receiveFriendsWannabes, unfriend } from "./actions";
+import { receiveFriendsWannabes, unfriend, acceptFriend } from "./actions";
 import { Link } from "react-router-dom";
 
-export default function Friends(props) {
-    console.log("props in friends: ", props);
+export default function Friends() {
     const dispatch = useDispatch();
 
     let friends = useSelector((state) => {
-        console.log("state.friendsWannabes: ", state.friendsWannabes);
+        //console.log("state.friendsWannabes: ", state.friendsWannabes);
         return (
             state.friendsWannabes &&
-            state.friendsWannabes.filter((friend) => friend.accepted == true)
+            state.friendsWannabes.filter((friend) => friend.accepted === true)
         );
     });
 
     let wannabes = useSelector((state) => {
         return (
             state.friendsWannabes &&
-            state.friendsWannabes.filter((wannabe) => wannabe.accepted == false)
+            state.friendsWannabes.filter(
+                (wannabe) => wannabe.accepted === false
+            )
         );
     });
 
     useEffect(() => {
         dispatch(receiveFriendsWannabes());
         console.log("dispatching receivefriendswannabes");
-    });
-
-    const acceptFriend = (e) => {
-        e.preventDefault();
-    };
+    }, []);
 
     return (
         <React.Fragment>
@@ -46,7 +43,11 @@ export default function Friends(props) {
                                             {wannabe.first} {wannabe.last}
                                         </p>
                                     </Link>
-                                    <button onClick={acceptFriend}>
+                                    <button
+                                        onClick={() => {
+                                            dispatch(acceptFriend(wannabe.id));
+                                        }}
+                                    >
                                         Accept Friend Request
                                     </button>
                                 </div>

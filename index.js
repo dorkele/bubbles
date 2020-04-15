@@ -8,6 +8,9 @@ const ses = require("./utils/ses");
 const cryptoRandomString = require("crypto-random-string");
 const s3 = require("./s3");
 const conf = require("./config");
+const server = require("http").Server(app);
+const io = require("socket.io")(server, { origins: "localhost:8080" }); ///if deploying alter this with url of website
+
 //////////FILE UPLOAD///////////
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -427,6 +430,15 @@ app.get("*", (req, res) => {
     }
 });
 
-app.listen(8080, function () {
+server.listen(8080, function () {
     console.log("I'm listening.");
+});
+
+io.on("connection", (socket) => {
+    //will be called every single time the connection happens
+    //recevies object that represents the connection between client and server
+    console.log(`A socket with the id ${socket.id} just connected.`);
+    socket.on("disconnect", () => {
+        console.log(`A socket with the id ${socket.id} just disconnected.`);
+    });
 });

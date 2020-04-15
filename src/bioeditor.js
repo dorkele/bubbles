@@ -54,7 +54,9 @@ export default class BioEditor extends React.Component {
                         this.handleChange(e);
                     }}
                 ></textarea>
-                <button onClick={(e) => this.updateBio(e)}>Save</button>
+                <button className="save" onClick={(e) => this.updateBio(e)}>
+                    Save
+                </button>
             </div>
         );
         if (
@@ -62,7 +64,7 @@ export default class BioEditor extends React.Component {
             this.state.bioEditorIsVisible == false
         ) {
             editBio = (
-                <button onClick={() => this.toggleTextarea()}>
+                <button className="add" onClick={() => this.toggleTextarea()}>
                     Add your bio.
                 </button>
             );
@@ -73,7 +75,10 @@ export default class BioEditor extends React.Component {
             editBio = (
                 <div>
                     {this.props.bio}
-                    <button onClick={() => this.toggleTextarea()}>
+                    <button
+                        className="edit"
+                        onClick={() => this.toggleTextarea()}
+                    >
                         Edit bio.
                     </button>
                 </div>

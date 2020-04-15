@@ -22,24 +22,29 @@ test("Clicking either the 'Add' or 'Edit' button causes a textarea and a 'Save' 
     expect(container.querySelector("button").innerHTML).toBe("Save");
 });
 
-// 4. Clicking the "Save" button causes an ajax request. The request should not actually happen during your test.
-//To prevent it from actually happening, you should mock axios.
+jest.mock("./axios");
 
 test("Clicking the 'Save' button causes an ajax request.", async () => {
-    // jest.mock("./axios");
+    const { container } = render(<BioEditor bio="My Bio" />);
+    fireEvent.click(container.querySelector(".edit"));
     axios.post.mockResolvedValue({
         data: {
             newBio: true,
         },
     });
-    const { container } = render(<BioEditor bio="My Bio" />);
-    fireEvent.click(container.querySelector("button"));
-    fireEvent.click(container.querySelector("button"));
+    fireEvent.click(container.querySelector(".save"));
 
     return axios.post().then((response) => {
-        expect(response.data.newBio.toBe(true));
+        expect(response.data.newBio).toBe(true);
     });
 });
 
-// 5. When the mock request is successful, the function that was passed as a prop to the component gets called.
-test(" When the mock request is successful, the function that was passed as a prop to the component gets called.", async () => {});
+test(" When the mock request is successful, the function that was passed as a prop to the component gets called.", async () => {
+    const myMockOnClick = jest.fn();
+    const { container } = render(
+        <BioEditor bio="My Bio" setBio={myMockOnClick} />
+    );
+    await fireEvent.click(container.querySelector(".edit"));
+    await fireEvent.click(container.querySelector(".save"));
+    expect(myMockOnClick.mock.calls.length).toBe(1);
+});

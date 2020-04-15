@@ -15,7 +15,9 @@ export default function Profile({
             <div>
                 {first} {last}
             </div>
-            <ProfilePic toggleModal={toggleModal} imgUrl={imgUrl} />
+            <div className="big-pic">
+                <ProfilePic toggleModal={toggleModal} imgUrl={imgUrl} />
+            </div>
             <BioEditor bio={bio} setBio={setBio} />
         </React.Fragment>
     );

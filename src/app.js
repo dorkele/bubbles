@@ -69,15 +69,21 @@ export default class App extends React.Component {
                 <div className="app">
                     <div className="header">
                         <Logo />
-                        <Link to="/users">Find People</Link>
-                        <ProfilePic
-                            first={this.state.first}
-                            last={this.state.last}
-                            imgUrl={this.state.imgUrl}
-                            toggleModal={() => this.toggleModal()}
-                        />
-                        <Link to="/logout">Log Out</Link>
-                        <Link to="/friends">Friends</Link>
+                        <div className="right-nav">
+                            <Link to="/users">Find People</Link>
+                            <Link to="/friends">Friends</Link>
+                            {/* <div className="prof-log-out"> */}
+                            <div className="small-pic">
+                                <ProfilePic
+                                    first={this.state.first}
+                                    last={this.state.last}
+                                    imgUrl={this.state.imgUrl}
+                                    toggleModal={() => this.toggleModal()}
+                                />
+                            </div>
+                            {/* <Link to="/logout">Log Out</Link> */}
+                            {/* </div> */}
+                        </div>
                     </div>
 
                     <Route

@@ -10,7 +10,7 @@ export default class Login extends React.Component {
 
     handleChange({ target }) {
         this.setState({
-            [target.name]: target.value
+            [target.name]: target.value,
         });
     }
 
@@ -19,21 +19,21 @@ export default class Login extends React.Component {
         axios
             .post("/login", {
                 email: this.state.email,
-                pass: this.state.pass
+                pass: this.state.pass,
             })
             .then(({ data }) => {
                 if (data.success) {
                     location.replace("/");
                 } else {
                     this.setState({
-                        error: true
+                        error: true,
                     });
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log(error);
                 this.setState({
-                    error: true
+                    error: true,
                 });
             });
     }
@@ -45,19 +45,19 @@ export default class Login extends React.Component {
                 <input
                     name="email"
                     placeholder="email"
-                    onChange={e => this.handleChange(e)}
+                    onChange={(e) => this.handleChange(e)}
                 />
                 <input
                     type="password"
                     name="pass"
                     placeholder="password"
-                    onChange={e => this.handleChange(e)}
+                    onChange={(e) => this.handleChange(e)}
                 />
                 <button onClick={() => this.login()}>Log in</button>
                 <div>
                     Not registered? <Link to="/">Register here.</Link>
                 </div>
-                <div>
+                <div className="margin">
                     Forgot your password?
                     <Link to="/reset">Click here to reset your password.</Link>
                 </div>

@@ -2,9 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Welcome from "./welcome";
 import App from "./app";
-import * as io from "socket.io-client";
+// import * as io from "socket.io-client";
 
-io.connect();
+// io.connect();
 
 // let elem = <App />;
 

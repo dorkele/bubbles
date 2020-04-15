@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "./axios";
+import { Link } from "react-router-dom";
 
 export default function FindPeople() {
     const [users, setUsers] = useState([]);
@@ -47,10 +48,12 @@ export default function FindPeople() {
             {users.map((user) => {
                 return (
                     <div key={user.id}>
-                        <img src={user.img_url} />
-                        <p>
-                            {user.first} {user.last}
-                        </p>
+                        <Link to={"/user/" + user.id}>
+                            <img src={user.img_url} />
+                            <p>
+                                {user.first} {user.last}
+                            </p>
+                        </Link>
                     </div>
                 );
             })}

@@ -5,12 +5,12 @@ import { useSelector } from "react-redux";
 export default function Chat() {
     const elemRef = useRef();
     const chatMessages = useSelector((state) => state && state.msgs);
-    const chatMessage = useSelector((state) => {
-        console.log("state: ", state);
-        console.log("state.msg: ", state.newMsg);
+    // const chatMessage = useSelector((state) => {
+    //     console.log("state: ", state);
+    //     console.log("state.msg: ", state.newMsg);
 
-        state && state.newMsg;
-    });
+    //     state && state.newMsg;
+    // });
     console.log("last 10msgs: ", chatMessages);
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export default function Chat() {
         elemRef.current.scrollTop =
             elemRef.current.scrollHeight - elemRef.current.clientHeight;
         ///everytime we get a new msg we need to check it
-    }, [chatMessage]);
+    }, [chatMessages]);
 
     const keyCheck = (e) => {
         // console.log("value: ", e.target.value);
@@ -52,19 +52,19 @@ export default function Chat() {
                             </div>
                         );
                     })}
-                {chatMessage &&
+                {/* {chatMessage &&
                     chatMessage.map((newMsg) => {
                         return (
-                            <div key={newMsg.id}>
-                                <img height="30px" src={newMsg.img_url} />
+                            <div key={newMsg[0].id}>
+                                <img height="30px" src={newMsg[0].img_url} />
                                 <p>
-                                    {newMsg.first} {newMsg.last}
+                                    {newMsg[0].first} {newMsg[0].last}
                                 </p>
-                                <p>{newMsg.text}</p>
-                                <p>{newMsg.created_at}</p>
+                                <p>{newMsg[0].text}</p>
+                                <p>{newMsg[0].created_at}</p>
                             </div>
                         );
-                    })}
+                    })} */}
             </div>
             <textarea
                 placeholder="Add your message here"

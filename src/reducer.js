@@ -46,7 +46,7 @@ export default function reducer(state = {}, action) {
         //console.log("action.msg: ", action.msg);
         state = {
             ...state,
-            newMsg: action.msg,
+            msgs: state.msgs.concat(action.msg),
         };
     }
 

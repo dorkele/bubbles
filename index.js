@@ -464,14 +464,21 @@ io.on("connection", function (socket) {
 
     ///listen for a new chat msg from the client - ADDING A NEW MSG
 
-    socket.on("My amazing", (newMsg) => {
+    socket.on("newChatMsg", (newMsg) => {
         ////server is listening for "my amazing"
         console.log("this msg is coming from chat.js component: ", newMsg);
         console.log("user who sent the mesagge: ", userId);
         ////db.query to store new chat msg inTO CHAT table insert
+        db.insertNewMsg(newMsg, userId)
+            .then((result) => {
+                console.log("result in insertNewMsg: ", result.rows);
+            })
+            .catch((error) => {
+                console.log("error in insertnewMsg: ", error);
+            });
         ////db query to get info about the user for render - probably a JOIN
         ///once you have that you want to emit your msg obj to everyone
         ///so tehy can see it immediately
-        io.socket.emit("addChatMsg", newMsg);
+        io.sockets.emit("addChatMsg", newMsg);
     });
 });

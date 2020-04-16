@@ -24,7 +24,7 @@ export default function Chat() {
         if (e.key === "Enter") {
             e.preventDefault();
             //console.log("Our msg: ", e.target.value);
-            socket.emit("My amazing", e.target.value);
+            socket.emit("newChatMsg", e.target.value);
             e.target.value = "";
         }
     };

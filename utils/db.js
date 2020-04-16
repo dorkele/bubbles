@@ -133,12 +133,13 @@ module.exports.getFriendsWannabes = (id) => {
 };
 
 module.exports.getLastTenMsgs = () => {
-    const q = `SELECT chat.id, first, last, img_url, text, chat.created_at
+    const q = `SELECT * FROM (SELECT chat.id, first, last, img_url, text, chat.created_at
     FROM users
     JOIN chat
     ON user_id = users.id
-    ORDER BY created_at ASC
-    LIMIT 10
+    ORDER BY created_at DESC
+    LIMIT 10) as last_chat
+    ORDER BY created_at ASC;
     `;
     return db.query(q);
 };
@@ -148,5 +149,17 @@ module.exports.insertNewMsg = (newMsg, userId) => {
     VALUES ($1, $2)
     RETURNING *`;
     const params = [newMsg, userId];
+    return db.query(q, params);
+};
+
+module.exports.getMessenger = (userId) => {
+    const q = `SELECT chat.id, first, last, img_url, text, chat.created_at
+    FROM users
+    JOIN CHAT 
+    ON user_id = $1
+    WHERE users.id = $1
+    ORDER BY created_at DESC
+    LIMIT 1`;
+    const params = [userId];
     return db.query(q, params);
 };

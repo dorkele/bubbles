@@ -42,5 +42,13 @@ export default function reducer(state = {}, action) {
         };
     }
 
+    if (action.type === "NEW_CHAT_MESSAGE") {
+        //console.log("action.msg: ", action.msg);
+        state = {
+            ...state,
+            newMsg: action.msg,
+        };
+    }
+
     return state;
 }

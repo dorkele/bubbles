@@ -21,11 +21,9 @@ export const init = (store) => {
             store.dispatch(chatMessages(msgs));
         });
 
-        // socket.on(
-        //     'chatMessage',
-        //     msg => store.dispatch(
-        //         chatMessage(msg)
-        //     )
-        // );
+        socket.on("chatMessage", (msg) => {
+            // console.log("msg in socket.js: ", msg);
+            store.dispatch(chatMessage(msg));
+        });
     }
 };

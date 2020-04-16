@@ -56,3 +56,11 @@ export function chatMessages(msgs) {
         msgs,
     };
 }
+
+export function chatMessage(msg) {
+    //console.log("I am in actionss showing that newmsg: ", msg);
+    return {
+        type: "NEW_CHAT_MESSAGE",
+        msg,
+    };
+}

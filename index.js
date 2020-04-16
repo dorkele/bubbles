@@ -468,17 +468,24 @@ io.on("connection", function (socket) {
         ////server is listening for "my amazing"
         console.log("this msg is coming from chat.js component: ", newMsg);
         console.log("user who sent the mesagge: ", userId);
-        ////db.query to store new chat msg inTO CHAT table insert
+
         db.insertNewMsg(newMsg, userId)
             .then((result) => {
                 console.log("result in insertNewMsg: ", result.rows);
+                db.getMessenger(userId)
+                    .then((response) => {
+                        console.log(
+                            "response from getMessenger: ",
+                            response.rows
+                        );
+                        io.sockets.emit("chatMessage", response.rows);
+                    })
+                    .catch((error) =>
+                        console.log("error in getMessenger: ", error)
+                    );
             })
             .catch((error) => {
                 console.log("error in insertnewMsg: ", error);
             });
-        ////db query to get info about the user for render - probably a JOIN
-        ///once you have that you want to emit your msg obj to everyone
-        ///so tehy can see it immediately
-        io.sockets.emit("addChatMsg", newMsg);
     });
 });

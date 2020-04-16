@@ -131,3 +131,14 @@ module.exports.getFriendsWannabes = (id) => {
     const params = [id];
     return db.query(q, params);
 };
+
+module.exports.getLastTenMsgs = () => {
+    const q = `SELECT users.id, first, last, img_url, text, chat.created_at
+    FROM users
+    JOIN chat
+    ON user_id = users.id
+    ORDER BY created_at ASC
+    LIMIT 10
+    `;
+    return db.query(q);
+};

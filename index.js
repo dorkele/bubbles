@@ -8,6 +8,7 @@ const ses = require("./utils/ses");
 const cryptoRandomString = require("crypto-random-string");
 const s3 = require("./s3");
 const conf = require("./config");
+////socket.io code////
 const server = require("http").Server(app);
 const io = require("socket.io")(server, { origins: "localhost:8080" }); ///if deploying alter this with url of website
 
@@ -33,14 +34,21 @@ const uploader = multer({
         fileSize: 2097152,
     },
 });
-////////////////////////////////////////
+/////////////////////////////////////
 app.use(compression());
-app.use(
-    require("cookie-session")({
-        secret: "alohomora sezame",
-        maxAge: 1000 * 60 * 60 * 24 * 14,
-    })
-);
+/////COOKIE SESSION WITH SOCKET////////
+const cookieSession = require("cookie-session");
+
+const cookieSessionMiddleware = cookieSession({
+    secret: "alohomora sezame",
+    maxAge: 1000 * 60 * 60 * 24 * 14,
+});
+
+app.use(cookieSessionMiddleware);
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
+////////////////////////////////////
 app.use(
     express.urlencoded({
         extended: false,
@@ -434,11 +442,36 @@ server.listen(8080, function () {
     console.log("I'm listening.");
 });
 
-io.on("connection", (socket) => {
-    //will be called every single time the connection happens
-    //recevies object that represents the connection between client and server
-    console.log(`A socket with the id ${socket.id} just connected.`);
-    socket.on("disconnect", () => {
-        console.log(`A socket with the id ${socket.id} just disconnected.`);
+io.on("connection", function (socket) {
+    console.log(`socket with the ${socket.id} is now connected`);
+
+    if (!socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+
+    const userId = socket.request.session.userId;
+
+    db.getLastTenMsgs()
+        .then((result) => {
+            console.log("result in gettenlastmsgs: ", result.rows);
+            io.sockets.emit("chatMessages", result.rows);
+        })
+        .catch((error) => {
+            console.log("error in gettenlastmsgs: ", error);
+        });
+
+    ///first argument has to match frontend that is listening
+
+    ///listen for a new chat msg from the client - ADDING A NEW MSG
+
+    socket.on("My amazing", (newMsg) => {
+        ////server is listening for "my amazing"
+        console.log("this msg is coming from chat.js component: ", newMsg);
+        console.log("user who sent the mesagge: ", userId);
+        ////db.query to store new chat msg inTO CHAT table insert
+        ////db query to get info about the user for render - probably a JOIN
+        ///once you have that you want to emit your msg obj to everyone
+        ///so tehy can see it immediately
+        io.socket.emit("addChatMsg", newMsg);
     });
 });

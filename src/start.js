@@ -2,15 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Welcome from "./welcome";
 import App from "./app";
-// import * as io from "socket.io-client";
+import { init } from "./socket";
 
-// io.connect();
-
-// let elem = <App />;
-
-// if (location.pathname == "/welcome") {
-//     elem = <Welcome />;
-// }
 ////////////////REDUX BOILERPLATE MIDDLEWARE//////////
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
@@ -28,6 +21,7 @@ let elem;
 if (location.pathname === "/welcome") {
     elem = <Welcome />;
 } else {
+    init(store);
     elem = (
         <Provider store={store}>
             <App />

@@ -34,5 +34,13 @@ export default function reducer(state = {}, action) {
         };
     }
 
+    if (action.type === "GET_LAST_TEN_MSGS") {
+        //console.log("action.msgs: ", action.msgs);
+        state = {
+            ...state,
+            msgs: action.msgs,
+        };
+    }
+
     return state;
 }

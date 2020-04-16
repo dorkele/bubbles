@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Link } from "react-router-dom";
 import OtherProfile from "./otherprofile.js";
 import FindPeople from "./findpeople";
 import Friends from "./friends";
+import Chat from "./chat";
 
 export default class App extends React.Component {
     constructor() {
@@ -18,11 +19,11 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
-        console.log("my app component has mounted!");
+        //console.log("my app component has mounted!");
         axios
             .get("/user")
             .then(({ data }) => {
-                console.log("result in cdm app: ", data[0]);
+                //console.log("result in cdm app: ", data[0]);
                 this.setState({
                     id: data[0].id,
                     first: data[0].first,
@@ -33,7 +34,7 @@ export default class App extends React.Component {
                     imgUrl: data[0].img_url,
                     timestamp: data[0].created_at,
                 });
-                console.log("this.state: ", this.state);
+                //console.log("this.state: ", this.state);
             })
             .catch((error) => {
                 console.log("error in cdm in app: ", error);
@@ -41,14 +42,14 @@ export default class App extends React.Component {
     }
 
     toggleModal() {
-        console.log("toggleModal is running");
+        //console.log("toggleModal is running");
         this.setState({
             uploaderIsVisible: !this.state.uploaderIsVisible,
         });
     }
 
     setImgUrl(url) {
-        console.log("reached the parent with imgUrl:  ", url);
+        //console.log("reached the parent with imgUrl:  ", url);
         this.setState({
             imgUrl: url,
             uploaderIsVisible: false,
@@ -62,7 +63,7 @@ export default class App extends React.Component {
     }
 
     render() {
-        console.log("this.state u render: ", this.state);
+        //console.log("this.state u render: ", this.state);
 
         return (
             <BrowserRouter>
@@ -112,6 +113,7 @@ export default class App extends React.Component {
                     />
                     <Route path="/users" component={FindPeople} />
                     <Route path="/friends" component={Friends} />
+                    <Route path="/chat" component={Chat} />
                     {this.state.uploaderIsVisible && (
                         <Uploader
                             setImgUrl={(imgUrl) => this.setImgUrl(imgUrl)}

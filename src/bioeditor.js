@@ -47,14 +47,17 @@ export default class BioEditor extends React.Component {
 
         let editBio;
         let txtarea = (
-            <div>
+            <div className="profile">
                 <textarea
                     name="textarea"
                     onChange={(e) => {
                         this.handleChange(e);
                     }}
                 ></textarea>
-                <button className="save" onClick={(e) => this.updateBio(e)}>
+                <button
+                    className="save inside-btn"
+                    onClick={(e) => this.updateBio(e)}
+                >
                     Save
                 </button>
             </div>
@@ -64,19 +67,24 @@ export default class BioEditor extends React.Component {
             this.state.bioEditorIsVisible == false
         ) {
             editBio = (
-                <button className="add" onClick={() => this.toggleTextarea()}>
-                    Add your bio.
-                </button>
+                <div className="profile">
+                    <button
+                        className="add inside-btn"
+                        onClick={() => this.toggleTextarea()}
+                    >
+                        Add your bio.
+                    </button>
+                </div>
             );
         } else if (
             this.props.bio != undefined &&
             this.state.bioEditorIsVisible == false
         ) {
             editBio = (
-                <div>
+                <div className="profile">
                     {this.props.bio}
                     <button
-                        className="edit"
+                        className="edit inside-btn"
                         onClick={() => this.toggleTextarea()}
                     >
                         Edit bio.

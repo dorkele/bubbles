@@ -121,6 +121,16 @@ module.exports.addFriendship = (userId, otherId) => {
     return db.query(q, params);
 };
 
+// module.exports.getFriendshipInfo = (userId, otherId) => {
+//     const q = `SELECT users.id, first, last, img_url, bio, accepted FROM users
+//     JOIN friendships
+//     ON sender_id=users.id
+//     OR receiver_id=users.id
+//     WHERE users.id=$1`;
+//     const params = [id];
+//     return db.query(q, params);
+};
+
 module.exports.getFriendsWannabes = (id) => {
     const q = `SELECT users.id, first, last, img_url, accepted
     FROM friendships

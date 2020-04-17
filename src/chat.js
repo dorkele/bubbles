@@ -5,31 +5,17 @@ import { useSelector } from "react-redux";
 export default function Chat() {
     const elemRef = useRef();
     const chatMessages = useSelector((state) => state && state.msgs);
-    // const chatMessage = useSelector((state) => {
-    //     console.log("state: ", state);
-    //     console.log("state.msg: ", state.newMsg);
 
-    //     state && state.newMsg;
-    // });
-    console.log("last 10msgs: ", chatMessages);
+    //console.log("last 10msgs: ", chatMessages);
 
     useEffect(() => {
-        // console.log("chat hooks has mounted!");
-        // console.log("elemRef: ", elemRef);
-        // console.log("scrollTop: ", elemRef.current.scrollTop);
-        // console.log("scrollHeight: ", elemRef.current.scrollHeight);
-        // console.log("clientHeight: ", elemRef.current.clientHeight);
         elemRef.current.scrollTop =
             elemRef.current.scrollHeight - elemRef.current.clientHeight;
-        ///everytime we get a new msg we need to check it
     }, [chatMessages]);
 
     const keyCheck = (e) => {
-        // console.log("value: ", e.target.value);
-        // console.log("key pressed: ", e.key);
         if (e.key === "Enter") {
             e.preventDefault();
-            //console.log("Our msg: ", e.target.value);
             socket.emit("newChatMsg", e.target.value);
             e.target.value = "";
         }
@@ -48,23 +34,12 @@ export default function Chat() {
                                     {msgs.first} {msgs.last}
                                 </p>
                                 <p>{msgs.text}</p>
-                                <p>{msgs.created_at}</p>
+                                <p>
+                                    {new Date(msgs.created_at).toLocaleString()}
+                                </p>
                             </div>
                         );
                     })}
-                {/* {chatMessage &&
-                    chatMessage.map((newMsg) => {
-                        return (
-                            <div key={newMsg[0].id}>
-                                <img height="30px" src={newMsg[0].img_url} />
-                                <p>
-                                    {newMsg[0].first} {newMsg[0].last}
-                                </p>
-                                <p>{newMsg[0].text}</p>
-                                <p>{newMsg[0].created_at}</p>
-                            </div>
-                        );
-                    })} */}
             </div>
             <textarea
                 placeholder="Add your message here"

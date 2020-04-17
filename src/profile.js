@@ -12,11 +12,13 @@ export default function Profile({
 }) {
     return (
         <React.Fragment>
-            <div>
-                {first} {last}
-            </div>
-            <div className="big-pic">
-                <ProfilePic toggleModal={toggleModal} imgUrl={imgUrl} />
+            <div className="profile">
+                <div className="big-pic">
+                    <ProfilePic toggleModal={toggleModal} imgUrl={imgUrl} />
+                </div>
+                <p>
+                    {first} {last}
+                </p>
             </div>
             <BioEditor bio={bio} setBio={setBio} />
         </React.Fragment>

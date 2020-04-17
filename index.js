@@ -276,10 +276,9 @@ app.get("/user/:id.json", (req, res) => {
             console.log("result in get user info id json: ", result.rows);
 
             res.json(
-                result.rows
-                // || {
-                //     redirect: true,
-                // }
+                result.rows || {
+                    redirect: true,
+                }
             );
         });
     }

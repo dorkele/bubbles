@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
 import axios from "./axios";
+import PrivateChat from "./privatechat";
 
 export default function FriendButton(props) {
     const [buttonText, setButtonText] = useState();
@@ -87,5 +90,10 @@ export default function FriendButton(props) {
         }
     };
 
-    return <button onClick={handleClick}>{buttonText}</button>;
+    return (
+        <div>
+            <button onClick={handleClick}>{buttonText}</button>
+            <Link to="/privatechat">Send private message</Link>
+        </div>
+    );
 }

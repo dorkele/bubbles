@@ -9,6 +9,7 @@ import OtherProfile from "./otherprofile.js";
 import FindPeople from "./findpeople";
 import Friends from "./friends";
 import Chat from "./chat";
+import PrivateChat from "./privatechat";
 
 export default class App extends React.Component {
     constructor() {
@@ -28,8 +29,8 @@ export default class App extends React.Component {
                     id: data[0].id,
                     first: data[0].first,
                     last: data[0].last,
-                    email: data[0].email,
-                    password: data[0].password,
+                    //email: data[0].email,
+                    //password: data[0].password,
                     bio: data[0].bio,
                     imgUrl: data[0].img_url,
                     timestamp: data[0].created_at,
@@ -71,6 +72,7 @@ export default class App extends React.Component {
                     <div className="header">
                         <Logo />
                         <div className="right-nav">
+                            <Link to="/chat">Chat</Link>
                             <Link to="/users">Find People</Link>
                             <Link to="/friends">Friends</Link>
                             {/* <div className="prof-log-out"> */}
@@ -114,6 +116,7 @@ export default class App extends React.Component {
                     <Route path="/users" component={FindPeople} />
                     <Route path="/friends" component={Friends} />
                     <Route path="/chat" component={Chat} />
+                    <Route path="/privatechat" component={PrivateChat} />
                     {this.state.uploaderIsVisible && (
                         <Uploader
                             setImgUrl={(imgUrl) => this.setImgUrl(imgUrl)}

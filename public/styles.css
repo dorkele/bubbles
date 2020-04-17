@@ -57,6 +57,18 @@ button {
     cursor: pointer;
 }
 
+.inside-btn {
+    border: #55bcf7 1px solid;
+    border-radius: 10px;
+    background-color: #55bcf7;
+    color: white;
+    height: 30px;
+    width: 100px;
+    font-size: 18px;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
 .margin {
     margin-bottom: 50px;
 }
@@ -88,6 +100,7 @@ button {
 .prof-pic {
     height: 100%;
     width: 100%;
+    border-radius: 50%;
 }
 
 .app {
@@ -100,7 +113,7 @@ button {
     width: 100%;
     justify-content: space-between;
     padding: 20px 5%;
-    border-bottom: lightskyblue 2px solid;
+    /* border-bottom: lightskyblue 2px solid; */
 }
 
 .right-nav {
@@ -112,6 +125,12 @@ button {
 }
 
 .prof-log-out {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile {
     display: flex;
     flex-direction: column;
     align-items: center;

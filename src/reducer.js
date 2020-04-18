@@ -50,5 +50,21 @@ export default function reducer(state = {}, action) {
         };
     }
 
+    if (action.type === "USER_JOINED") {
+        //console.log("state in reducer: ", state);
+        state = {
+            ...state,
+            users: state.users.concat(action.user),
+        };
+    }
+
+    if (action.type === "ONLINE_USERS") {
+        //console.log("state in resudecr online users: ", state);
+        state = {
+            ...state,
+            users: action.users,
+        };
+    }
+
     return state;
 }

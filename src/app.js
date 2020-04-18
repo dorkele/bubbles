@@ -9,7 +9,6 @@ import OtherProfile from "./otherprofile.js";
 import FindPeople from "./findpeople";
 import Friends from "./friends";
 import Chat from "./chat";
-import PrivateChat from "./privatechat";
 
 export default class App extends React.Component {
     constructor() {
@@ -116,7 +115,6 @@ export default class App extends React.Component {
                     <Route path="/users" component={FindPeople} />
                     <Route path="/friends" component={Friends} />
                     <Route path="/chat" component={Chat} />
-                    <Route path="/privatechat" component={PrivateChat} />
                     {this.state.uploaderIsVisible && (
                         <Uploader
                             setImgUrl={(imgUrl) => this.setImgUrl(imgUrl)}

@@ -64,3 +64,19 @@ export function chatMessage(msg) {
         msg,
     };
 }
+
+export function userJoined(user) {
+    console.log("I am in actions showing the user that joined: ", user);
+    return {
+        type: "USER_JOINED",
+        user,
+    };
+}
+
+export function onlineUsers(users) {
+    console.log("I am in actions showing online users: ", users);
+    return {
+        type: "ONLINE_USERS",
+        users,
+    };
+}

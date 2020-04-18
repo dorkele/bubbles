@@ -82,7 +82,7 @@ app.get("/welcome", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-    console.log("req.data: ", req.body);
+    //console.log("req.data: ", req.body);
     console.log("post/register happening");
 
     const first = req.body.first;
@@ -92,14 +92,14 @@ app.post("/register", (req, res) => {
 
     hash(password)
         .then((hashedPw) => {
-            console.log("hashedPW", hashedPw);
+            //console.log("hashedPW", hashedPw);
 
             db.insertUser(first, last, email, hashedPw)
                 .then((result) => {
-                    console.log(result.rows);
+                    //console.log(result.rows);
 
                     req.session.userId = result.rows[0].id;
-                    console.log(req.session);
+                    //console.log(req.session);
 
                     res.json({ success: true });
                 })
@@ -118,18 +118,18 @@ app.post("/register", (req, res) => {
 
 app.post("/login", (req, res) => {
     console.log("/POST LOGIN");
-    console.log("req.body: ", req.body);
+    //console.log("req.body: ", req.body);
     db.getPass(req.body.email)
         .then((result) => {
             const hashedPw = result.rows[0].password;
             const password = req.body.pass;
             const id = result.rows[0].id;
-            console.log(hashedPw, password);
+            //console.log(hashedPw, password);
 
             compare(password, hashedPw)
                 .then((matchValue) => {
                     if (matchValue == true) {
-                        console.log("result.rows[0].id: ", result.rows[0].id);
+                        //console.log("result.rows[0].id: ", result.rows[0].id);
                         req.session.userId = id;
                         res.json({
                             success: true,
@@ -155,10 +155,10 @@ app.post("/login", (req, res) => {
 
 app.post("/password/reset/start", (req, res) => {
     console.log("i am now in POST /password/reset/start route");
-    console.log("req.body: ", req.body);
+    //console.log("req.body: ", req.body);
     db.checkEmail(req.body.email)
         .then((result) => {
-            console.log("result in check Email: ", result.rows[0].exists);
+            //console.log("result in check Email: ", result.rows[0].exists);
             if (result.rows[0].exists == true) {
                 const secretCode = cryptoRandomString({
                     length: 6,
@@ -166,7 +166,7 @@ app.post("/password/reset/start", (req, res) => {
                 let email = req.body.email;
                 db.insertCode(secretCode, email)
                     .then((response) => {
-                        console.log(response);
+                        console.log(response.rows);
 
                         ses.sendEmail(
                             email,
@@ -174,7 +174,7 @@ app.post("/password/reset/start", (req, res) => {
                             secretCode
                         )
                             .then(() => {
-                                console.log("working!");
+                                //console.log("working!");
                                 res.json({
                                     success: true,
                                 });
@@ -208,21 +208,21 @@ app.post("/password/reset/start", (req, res) => {
 
 app.post("/password/reset/verify", (req, res) => {
     console.log("i arrived in POST /password/reset/verify");
-    console.log("req.body.email&code: ", req.body.email, req.body.code);
+    //console.log("req.body.email&code: ", req.body.email, req.body.code);
     db.findCode(req.body.email)
         .then((result) => {
             console.log(result.rows);
             let index = result.rows.length - 1;
 
             if (result.rows[index].code == req.body.code) {
-                console.log("req.body.newPw: ", req.body.password);
+                //console.log("req.body.newPw: ", req.body.password);
 
                 hash(req.body.password)
                     .then((hashedPw) => {
-                        console.log("hashedPW", hashedPw);
+                        //console.log("hashedPW", hashedPw);
                         db.updateUser(req.body.email, hashedPw)
                             .then((result) => {
-                                console.log(result.rows);
+                                //console.log(result.rows);
                                 res.json({ success: true });
                             })
                             .catch((err) => {
@@ -252,11 +252,11 @@ app.post("/password/reset/verify", (req, res) => {
 
 app.get("/user", (req, res) => {
     console.log("i am in GET user route");
-    console.log("req.session.userId: ", req.session.userId);
+    //console.log("req.session.userId: ", req.session.userId);
     const id = req.session.userId;
     db.getUserInfo(id)
         .then((result) => {
-            console.log("result.rows in getUserInfo: ", result.rows);
+            //console.log("result.rows in getUserInfo: ", result.rows);
             res.json(result.rows);
         })
         .catch((error) => {
@@ -265,7 +265,7 @@ app.get("/user", (req, res) => {
 });
 
 app.get("/user/:id.json", (req, res) => {
-    console.log("req.params user id json: ", req.params);
+    //console.log("req.params user id json: ", req.params);
 
     if (req.params.id == req.session.userId) {
         res.json({
@@ -273,7 +273,7 @@ app.get("/user/:id.json", (req, res) => {
         });
     } else {
         db.getUserInfo(req.params.id).then((result) => {
-            console.log("result in get user info id json: ", result.rows);
+            //console.log("result in get user info id json: ", result.rows);
 
             res.json(
                 result.rows || {
@@ -289,11 +289,11 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 
     let userId = req.session.userId;
     let imageUrl = conf.s3Url + req.file.filename;
-    console.log("imageUrl: ", imageUrl);
+    //console.log("imageUrl: ", imageUrl);
 
     db.addProfPic(imageUrl, userId)
         .then((response) => {
-            console.log("response in insert prof pic: ", response);
+            //console.log("response in insert prof pic: ", response);
             res.json({
                 success: true,
                 imgUrl: imageUrl,
@@ -306,12 +306,12 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 
 app.post("/bio", (req, res) => {
     console.log("made it to POST bio");
-    console.log("req.body u post bio: ", req.body);
+    //console.log("req.body u post bio: ", req.body);
     let userId = req.session.userId;
     let newBio = req.body.newBio;
     db.addBio(newBio, userId)
         .then((response) => {
-            console.log("response in post bio: ", response);
+            //console.log("response in post bio: ", response);
             res.json({
                 success: true,
                 newBio,
@@ -324,12 +324,12 @@ app.post("/bio", (req, res) => {
 
 app.get("/findusers", (req, res) => {
     console.log("made it to GET users route");
-    console.log("req: ", req.query.val);
+    //console.log("req: ", req.query.val);
 
     if (req.query.val == "") {
         db.getLastUsers()
             .then((result) => {
-                console.log("result in get users: ", result.rows);
+                //console.log("result in get users: ", result.rows);
                 res.json(result.rows);
             })
             .catch((error) => {
@@ -338,7 +338,7 @@ app.get("/findusers", (req, res) => {
     } else {
         db.getMatchingUsers(req.query.val)
             .then((result) => {
-                console.log("result in get matching users: ", result.rows);
+                //console.log("result in get matching users: ", result.rows);
                 res.json(result.rows);
             })
             .catch((error) =>
@@ -349,15 +349,15 @@ app.get("/findusers", (req, res) => {
 
 app.get("/initial-friendship-status/:id", (req, res) => {
     console.log("made it to the GET initial friendship status route");
-    console.log("req.session.userId: ", req.session.userId);
-    console.log("req.params: ", req.params);
+    //console.log("req.session.userId: ", req.session.userId);
+    //console.log("req.params: ", req.params);
 
     let userId = req.session.userId;
     let otherId = req.params.id;
 
     db.getInitialStatus(userId, otherId)
         .then((result) => {
-            console.log("result in select initial status: ", result.rows);
+            //console.log("result in select initial status: ", result.rows);
             res.json(result.rows);
         })
         .catch((error) =>
@@ -373,7 +373,7 @@ app.post("/make-friend-request/:id", (req, res) => {
 
     db.makeFriendRequest(userId, otherId)
         .then((result) => {
-            console.log("result in makefriendrequest: ", result.rows);
+            //console.log("result in makefriendrequest: ", result.rows);
             res.json(result.rows);
         })
         .catch((error) => {
@@ -388,7 +388,7 @@ app.post("/end-friendship/:id", (req, res) => {
     let otherId = req.params.id;
     db.deleteFriendship(userId, otherId)
         .then((result) => {
-            console.log(result.rows);
+            //console.log(result.rows);
             //res.json(result.rows);
             res.json(otherId);
         })
@@ -403,7 +403,7 @@ app.post("/add-friendship/:id", (req, res) => {
     let otherId = req.params.id;
     db.addFriendship(userId, otherId)
         .then((result) => {
-            console.log("result in add freindship: ", result.rows);
+            //console.log("result in add freindship: ", result.rows);
             res.json(otherId);
         })
         .catch((error) => {
@@ -416,7 +416,7 @@ app.get("/friends-wannabes", (req, res) => {
     let id = req.session.userId;
     db.getFriendsWannabes(id)
         .then((result) => {
-            console.log("result in friends-wannabes: ", result.rows);
+            //console.log("result in friends-wannabes: ", result.rows);
             res.json(result.rows);
         })
         .catch((error) => {
@@ -441,6 +441,7 @@ server.listen(8080, function () {
     console.log("I'm listening.");
 });
 
+let onlineUsers = {};
 io.on("connection", function (socket) {
     console.log(`socket with the ${socket.id} is now connected`);
 
@@ -452,22 +453,16 @@ io.on("connection", function (socket) {
 
     db.getLastTenMsgs()
         .then((result) => {
-            console.log("result in gettenlastmsgs: ", result.rows);
+            //console.log("result in gettenlastmsgs: ", result.rows);
             io.sockets.emit("chatMessages", result.rows);
         })
         .catch((error) => {
             console.log("error in gettenlastmsgs: ", error);
         });
 
-    ///first argument has to match frontend that is listening
-
-    ///listen for a new chat msg from the client - ADDING A NEW MSG
-
     socket.on("newChatMsg", (newMsg) => {
-        ////server is listening for "my amazing"
-        console.log("this msg is coming from chat.js component: ", newMsg);
-        console.log("user who sent the mesagge: ", userId);
-
+        //console.log("this msg is coming from chat.js component: ", newMsg);
+        //console.log("user who sent the mesagge: ", userId);
         db.insertNewMsg(newMsg, userId)
             .then((result) => {
                 console.log("result in insertNewMsg: ", result.rows);
@@ -487,4 +482,53 @@ io.on("connection", function (socket) {
                 console.log("error in insertnewMsg: ", error);
             });
     });
+
+    onlineUsers[socket.id] = userId;
+    //socket.on("connect", (socket) => {
+    let userCount = 0;
+    for (const socket in onlineUsers) {
+        //console.log("onlineUsers[socket]: ", onlineUsers[socket]);
+        //console.log(userId);
+
+        if (onlineUsers[socket] == userId) {
+            userCount++;
+        }
+    }
+
+    if (userCount > 1) {
+        console.log("we already have that one");
+    } else {
+        console.log("good time for a db?");
+        db.getUserInfo(userId)
+            .then((response) => {
+                console.log("response.rows before userjoined: ", response.rows);
+                io.sockets.sockets[socket.id].broadcast.emit(
+                    "userjoined",
+                    response.rows
+                );
+            })
+            .catch((error) => {
+                console.log("error in userjoined: ", error);
+            });
+    }
+    console.log("online users: ", onlineUsers);
+
+    let onlineUserIds = [];
+
+    for (const socket in onlineUsers) {
+        onlineUserIds.push(onlineUsers[socket]);
+    }
+
+    console.log("onlineUserIds: ", onlineUserIds);
+
+    db.getOnlineUsers(onlineUserIds)
+        .then((response) => {
+            console.log("response from get online users: ", response.rows);
+            io.sockets.sockets[socket.id].emit("onlineusers", response.rows);
+        })
+        .catch((error) => {
+            console.log("error in get online users: ", error);
+        });
+
+    //});
 });

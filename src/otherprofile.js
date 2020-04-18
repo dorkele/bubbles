@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "./axios";
 import FriendButton from "./friendbutton.js";
+import PrivateChat from "./privatechat";
 
 export default class OtherProfile extends React.Component {
     constructor(props) {

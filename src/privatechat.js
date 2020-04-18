@@ -8,6 +8,7 @@ export default function PrivateChat() {
                     Kao fol neka poruka jadna ja nemam pojma kako cu ovo
                     implementiratiiii
                 </p>
+                <textarea placeholder="burst the bubble" />
             </div>
         </React.Fragment>
     );

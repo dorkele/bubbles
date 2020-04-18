@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { socket } from "./socket";
 import { useSelector } from "react-redux";
+import OnlineUsers from "./onlineusers";
 
 export default function Chat() {
     const elemRef = useRef();
@@ -45,6 +46,7 @@ export default function Chat() {
                 placeholder="Add your message here"
                 onKeyDown={keyCheck}
             ></textarea>
+            <OnlineUsers />
         </div>
     );
 }

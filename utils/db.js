@@ -165,7 +165,7 @@ module.exports.getMessenger = (userId) => {
 };
 
 module.exports.getOnlineUsers = (onlineUserIds) => {
-    const q = `SELECT first, last, img_url
+    const q = `SELECT id, first, last, img_url
     FROM users 
     WHERE id = ANY($1);`;
     const params = [onlineUserIds];

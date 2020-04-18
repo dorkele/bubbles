@@ -28,8 +28,6 @@ export default class App extends React.Component {
                     id: data[0].id,
                     first: data[0].first,
                     last: data[0].last,
-                    //email: data[0].email,
-                    //password: data[0].password,
                     bio: data[0].bio,
                     imgUrl: data[0].img_url,
                     timestamp: data[0].created_at,

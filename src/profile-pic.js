@@ -11,6 +11,9 @@ export default function ProfilePic({ first, last, imgUrl, toggleModal }) {
                 onClick={() => toggleModal()}
                 src={imgUrl}
                 alt={`${first} ${last}`}
+                onError={(e) => {
+                    e.target.src = "/images/bubbles-prof-default.png";
+                }}
             />
         </React.Fragment>
     );

@@ -484,51 +484,78 @@ io.on("connection", function (socket) {
     });
 
     onlineUsers[socket.id] = userId;
-    //socket.on("connect", (socket) => {
-    let userCount = 0;
-    for (const socket in onlineUsers) {
-        //console.log("onlineUsers[socket]: ", onlineUsers[socket]);
-        //console.log(userId);
+    socket.on("connect", () => {
+        let userCount = 0;
+        for (const socket in onlineUsers) {
+            //console.log("onlineUsers[socket]: ", onlineUsers[socket]);
+            //console.log(userId);
 
-        if (onlineUsers[socket] == userId) {
-            userCount++;
+            if (onlineUsers[socket] == userId) {
+                userCount++;
+            }
         }
-    }
 
-    if (userCount > 1) {
-        console.log("we already have that one");
-    } else {
-        console.log("good time for a db?");
-        db.getUserInfo(userId)
+        if (userCount > 1) {
+            //console.log("we already have that one");
+            return;
+        } else {
+            //console.log("good time for a db?");
+            db.getUserInfo(userId)
+                .then((response) => {
+                    //console.log("response.rows before userjoined: ", response.rows);
+                    io.sockets.sockets[socket.id].broadcast.emit(
+                        "userjoined",
+                        response.rows
+                    );
+                })
+                .catch((error) => {
+                    console.log("error in userjoined: ", error);
+                });
+        }
+        //console.log("online users: ", onlineUsers);
+    });
+
+    let onlineUserIds = [];
+
+    socket.on("connect", () => {
+        for (const socket in onlineUsers) {
+            onlineUserIds.push(onlineUsers[socket]);
+        }
+
+        console.log("onlineUserIds: ", onlineUserIds);
+
+        db.getOnlineUsers(onlineUserIds)
             .then((response) => {
-                console.log("response.rows before userjoined: ", response.rows);
-                io.sockets.sockets[socket.id].broadcast.emit(
-                    "userjoined",
+                //console.log("response from get online users: ", response.rows);
+                io.sockets.sockets[socket.id].emit(
+                    "onlineusers",
                     response.rows
                 );
             })
             .catch((error) => {
-                console.log("error in userjoined: ", error);
+                console.log("error in get online users: ", error);
             });
-    }
-    console.log("online users: ", onlineUsers);
+    });
 
-    let onlineUserIds = [];
+    socket.on("disconnect", () => {
+        // emit userLeft here
+        console.log("disconnecting");
 
-    for (const socket in onlineUsers) {
-        onlineUserIds.push(onlineUsers[socket]);
-    }
+        delete onlineUsers[socket.id];
+        console.log("onlineUsers: ", onlineUsers);
 
-    console.log("onlineUserIds: ", onlineUserIds);
-
-    db.getOnlineUsers(onlineUserIds)
-        .then((response) => {
-            console.log("response from get online users: ", response.rows);
-            io.sockets.sockets[socket.id].emit("onlineusers", response.rows);
-        })
-        .catch((error) => {
-            console.log("error in get online users: ", error);
-        });
+        let userCheck;
+        for (const socket in onlineUsers) {
+            if (onlineUsers[socket] == userId) {
+                userCheck++;
+            }
+        }
+        if (userCheck > 0) {
+            return;
+        } else {
+            io.sockets.emit("userleft", userId);
+        }
+    });
 
     //});
 });

@@ -49,7 +49,13 @@ export default function FindPeople() {
                 return (
                     <div key={user.id}>
                         <Link to={"/user/" + user.id}>
-                            <img src={user.img_url} />
+                            <img
+                                src={user.img_url}
+                                onError={(e) => {
+                                    e.target.src =
+                                        "/images/bubbles-prof-default.png";
+                                }}
+                            />
                             <p>
                                 {user.first} {user.last}
                             </p>

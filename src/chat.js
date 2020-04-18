@@ -23,14 +23,20 @@ export default function Chat() {
     };
 
     return (
-        <div>
-            <p>Welcome to chat</p>
+        <div className="chat-online">
             <div className="chat-messages-container" ref={elemRef}>
                 {chatMessages &&
                     chatMessages.map((msgs) => {
                         return (
                             <div key={msgs.id}>
-                                <img height="30px" src={msgs.img_url} />
+                                <img
+                                    height="30px"
+                                    src={msgs.img_url}
+                                    onError={(e) => {
+                                        e.target.src =
+                                            "/images/bubbles-prof-default.png";
+                                    }}
+                                />
                                 <p>
                                     {msgs.first} {msgs.last}
                                 </p>
@@ -41,11 +47,12 @@ export default function Chat() {
                             </div>
                         );
                     })}
+
+                <textarea
+                    placeholder="Add your message here"
+                    onKeyDown={keyCheck}
+                ></textarea>
             </div>
-            <textarea
-                placeholder="Add your message here"
-                onKeyDown={keyCheck}
-            ></textarea>
             <OnlineUsers />
         </div>
     );

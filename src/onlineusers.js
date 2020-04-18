@@ -5,28 +5,34 @@ export default function OnlineUsers() {
     //let onlineUsers = [];
     let onlineUsers = useSelector((state) => {
         console.log("state: ", state);
-        return state.users;
-        //&&
-        //     state.friendsWannabes.filter((friend) => friend.accepted === true)
-        // );
+        return state && state.users;
     });
 
     useEffect(() => {}, [onlineUsers]);
+    console.log("onlineUsers in onlineusers: ", onlineUsers);
 
     return (
-        <React.Fragment>
+        <div className="online-users">
             <div>See who is currently online:</div>
             {onlineUsers &&
                 onlineUsers.map((user) => {
                     return (
                         <div key={user.id}>
-                            <img height="30px" src={user.img_url} />
+                            <img
+                                height="30px"
+                                src={user.img_url}
+                                onError={(e) => {
+                                    e.target.src =
+                                        "/images/bubbles-prof-default.png";
+                                }}
+                            />
+                            />
                             <p>
                                 {user.first} {user.last}
                             </p>
                         </div>
                     );
                 })}
-        </React.Fragment>
+        </div>
     );
 }

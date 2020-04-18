@@ -38,7 +38,13 @@ export default function Friends() {
                             return (
                                 <div key={wannabe.id}>
                                     <Link to={"/user/" + wannabe.id}>
-                                        <img src={wannabe.img_url} />
+                                        <img
+                                            src={wannabe.img_url}
+                                            onError={(e) => {
+                                                e.target.src =
+                                                    "/images/bubbles-prof-default.png";
+                                            }}
+                                        />
                                         <p>
                                             {wannabe.first} {wannabe.last}
                                         </p>
@@ -63,7 +69,13 @@ export default function Friends() {
                             return (
                                 <div key={friend.id}>
                                     <Link to={"/user/" + friend.id}>
-                                        <img src={friend.img_url} />
+                                        <img
+                                            src={friend.img_url}
+                                            onError={(e) => {
+                                                e.target.src =
+                                                    "/images/bubbles-prof-default.png";
+                                            }}
+                                        />
                                         <p>
                                             {friend.first} {friend.last}
                                         </p>

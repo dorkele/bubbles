@@ -40,7 +40,12 @@ export default class OtherProfile extends React.Component {
                 <div>
                     {this.state.first} {this.state.last}
                 </div>
-                <img src={this.state.imgUrl} />
+                <img
+                    src={this.state.imgUrl}
+                    onError={(e) => {
+                        e.target.src = "/images/bubbles-prof-default.png";
+                    }}
+                />
                 <div> {this.state.bio} </div>
                 <FriendButton id={this.props.match.params.id} />
             </React.Fragment>

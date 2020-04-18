@@ -142,3 +142,14 @@ button {
     overflow-y: scroll;
     width: 80%;
 }
+
+.chat-online {
+    display: flex;
+    flex-direction: row;
+}
+
+.online-users {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}

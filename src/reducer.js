@@ -59,10 +59,21 @@ export default function reducer(state = {}, action) {
     }
 
     if (action.type === "ONLINE_USERS") {
-        //console.log("state in resudecr online users: ", state);
+        //console.log("state in reducer online users: ", state);
         state = {
             ...state,
             users: action.users,
+        };
+    }
+
+    if (action.type === "USER_LEFT") {
+        state = {
+            ...state,
+            users: state.users.filter((user) => {
+                if (user.id != action.user) {
+                    return user;
+                }
+            }),
         };
     }
 

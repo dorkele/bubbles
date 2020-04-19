@@ -484,75 +484,77 @@ io.on("connection", function (socket) {
     });
 
     onlineUsers[socket.id] = userId;
-    socket.on("connect", () => {
-        let userCount = 0;
-        for (const socket in onlineUsers) {
-            //console.log("onlineUsers[socket]: ", onlineUsers[socket]);
-            //console.log(userId);
+    //socket.on("connect", (socket) => {
+    let userCount = 0;
+    for (const socket in onlineUsers) {
+        //console.log("onlineUsers[socket]: ", onlineUsers[socket]);
+        //console.log(userId);
 
-            if (onlineUsers[socket] == userId) {
-                userCount++;
-            }
+        if (onlineUsers[socket] == userId) {
+            userCount++;
         }
+    }
 
-        if (userCount > 1) {
-            //console.log("we already have that one");
-            return;
-        } else {
-            //console.log("good time for a db?");
-            db.getUserInfo(userId)
-                .then((response) => {
-                    //console.log("response.rows before userjoined: ", response.rows);
-                    io.sockets.sockets[socket.id].broadcast.emit(
-                        "userjoined",
-                        response.rows
-                    );
-                })
-                .catch((error) => {
-                    console.log("error in userjoined: ", error);
-                });
-        }
-        //console.log("online users: ", onlineUsers);
-    });
-
-    let onlineUserIds = [];
-
-    socket.on("connect", () => {
-        for (const socket in onlineUsers) {
-            onlineUserIds.push(onlineUsers[socket]);
-        }
-
-        console.log("onlineUserIds: ", onlineUserIds);
-
-        db.getOnlineUsers(onlineUserIds)
+    if (userCount > 1) {
+        console.log("we already have that one");
+        //return;
+    } else {
+        //console.log("good time for a db?");
+        db.getUserInfo(userId)
             .then((response) => {
-                //console.log("response from get online users: ", response.rows);
-                io.sockets.sockets[socket.id].emit(
-                    "onlineusers",
+                //console.log("response.rows before userjoined: ", response.rows);
+                io.sockets.sockets[socket.id].broadcast.emit(
+                    "userjoined",
                     response.rows
                 );
             })
             .catch((error) => {
-                console.log("error in get online users: ", error);
+                console.log("error in userjoined: ", error);
             });
-    });
+    }
+    //console.log("online users: ", onlineUsers);
+    //});
+
+    let onlineUserIds = [];
+
+    //socket.on("connect", (socket) => {
+    for (const socket in onlineUsers) {
+        onlineUserIds.push(onlineUsers[socket]);
+    }
+
+    db.getOnlineUsers(onlineUserIds)
+        .then((response) => {
+            //console.log("response from get online users: ", response.rows);
+            io.sockets.sockets[socket.id].emit("onlineusers", response.rows);
+        })
+        .catch((error) => {
+            console.log("error in get online users: ", error);
+        });
+    //});
 
     socket.on("disconnect", () => {
         // emit userLeft here
-        console.log("disconnecting");
+        console.log(`socket with the ${socket.id} is now disconnected`);
 
         delete onlineUsers[socket.id];
-        console.log("onlineUsers: ", onlineUsers);
+        //console.log("onlineUsers: ", onlineUsers);
 
-        let userCheck;
+        let userCheck = 0;
         for (const socket in onlineUsers) {
+            // console.log("onlineUsers[socket]", onlineUsers[socket]);
+            // console.log("userId: ", userId);
+
             if (onlineUsers[socket] == userId) {
                 userCheck++;
             }
         }
+        //console.log("userCheck: ", userCheck);
+
         if (userCheck > 0) {
+            //console.log("log nesto umjesto return");
             return;
         } else {
+            // console.log("ulazim u else iako ne bih trebao");
             io.sockets.emit("userleft", userId);
         }
     });

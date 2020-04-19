@@ -74,7 +74,7 @@ export function userJoined(user) {
 }
 
 export function onlineUsers(users) {
-    //console.log("I am in actions showing online users: ", users);
+    console.log("I am in actions showing online users: ", users);
     return {
         type: "ONLINE_USERS",
         users,
@@ -82,7 +82,7 @@ export function onlineUsers(users) {
 }
 
 export function userLeft(user) {
-    console.log("I am in actions showing the user who left: ", user);
+    //console.log("I am in actions showing the user who left: ", user);
     return {
         type: "USER_LEFT",
         user,

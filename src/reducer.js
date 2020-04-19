@@ -67,6 +67,8 @@ export default function reducer(state = {}, action) {
     }
 
     if (action.type === "USER_LEFT") {
+        console.log("USER LEFT");
+
         state = {
             ...state,
             users: state.users.filter((user) => {
@@ -75,6 +77,7 @@ export default function reducer(state = {}, action) {
                 }
             }),
         };
+        console.log("reducer online users: state: ", state);
     }
 
     return state;

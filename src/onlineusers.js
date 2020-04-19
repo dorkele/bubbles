@@ -26,7 +26,7 @@ export default function OnlineUsers() {
                                         "/images/bubbles-prof-default.png";
                                 }}
                             />
-                            />
+
                             <p>
                                 {user.first} {user.last}
                             </p>

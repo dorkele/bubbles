@@ -37,7 +37,7 @@ export const init = (store) => {
         });
 
         socket.on("userleft", (user) => {
-            console.log("user left in socket.js: ", user);
+            //console.log("user left in socket.js: ", user);
             store.dispatch(userLeft(user));
         });
     }

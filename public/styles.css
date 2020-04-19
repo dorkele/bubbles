@@ -289,3 +289,9 @@ label {
     border-radius: 10px;
     background-color: #55bcf7;
 }
+
+.find-friends-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

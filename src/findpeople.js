@@ -40,7 +40,7 @@ export default function FindPeople() {
     };
 
     return (
-        <React.Fragment>
+        <div className="find-friends-container">
             <input
                 onChange={handleChange}
                 placeholder="type to find people"
@@ -55,6 +55,7 @@ export default function FindPeople() {
                                     e.target.src =
                                         "/images/bubbles-prof-default.png";
                                 }}
+                                className="prof-pic"
                             />
                             <p>
                                 {user.first} {user.last}
@@ -63,6 +64,6 @@ export default function FindPeople() {
                     </div>
                 );
             })}
-        </React.Fragment>
+        </div>
     );
 }

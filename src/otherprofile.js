@@ -37,17 +37,25 @@ export default class OtherProfile extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <div>
-                    {this.state.first} {this.state.last}
+                <div className="profile">
+                    <div className="big-pic">
+                        <img
+                            src={this.state.imgUrl}
+                            onError={(e) => {
+                                e.target.src =
+                                    "/images/bubbles-prof-default.png";
+                            }}
+                        />
+                    </div>
+                    <p>
+                        {this.state.first} {this.state.last}
+                    </p>
+                    <p> {this.state.bio} </p>
+                    <FriendButton
+                        id={this.props.match.params.id}
+                        className="inside-btn"
+                    />
                 </div>
-                <img
-                    src={this.state.imgUrl}
-                    onError={(e) => {
-                        e.target.src = "/images/bubbles-prof-default.png";
-                    }}
-                />
-                <div> {this.state.bio} </div>
-                <FriendButton id={this.props.match.params.id} />
             </React.Fragment>
         );
     }

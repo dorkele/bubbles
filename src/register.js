@@ -70,7 +70,7 @@ export default class Registration extends React.Component {
                     onChange={(e) => this.handleChange(e)}
                 />
                 <button onClick={() => this.register()}>Register</button>
-                <div className="margin">
+                <div>
                     Already registered? <Link to="/login">Log in</Link>
                 </div>
             </div>

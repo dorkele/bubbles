@@ -7,7 +7,7 @@ export default function Chat() {
     const elemRef = useRef();
     const chatMessages = useSelector((state) => state && state.msgs);
 
-    //console.log("last 10msgs: ", chatMessages);
+    console.log("last 10msgs: ", chatMessages);
 
     useEffect(() => {
         elemRef.current.scrollTop =
@@ -24,31 +24,42 @@ export default function Chat() {
 
     return (
         <div className="chat-online">
-            <div className="chat-messages-container" ref={elemRef}>
-                {chatMessages &&
-                    chatMessages.map((msgs) => {
-                        return (
-                            <div key={msgs.id}>
-                                <img
-                                    height="30px"
-                                    src={msgs.img_url}
-                                    onError={(e) => {
-                                        e.target.src =
-                                            "/images/bubbles-prof-default.png";
-                                    }}
-                                />
-                                <p>
-                                    {msgs.first} {msgs.last}
-                                </p>
-                                <p>{msgs.text}</p>
-                                <p>
-                                    {new Date(msgs.created_at).toLocaleString()}
-                                </p>
-                            </div>
-                        );
-                    })}
-
+            <div className="chat-textarea">
+                <div className="chat-messages-container style-2" ref={elemRef}>
+                    {chatMessages &&
+                        chatMessages.map((msgs) => {
+                            return (
+                                <div
+                                    key={msgs.id}
+                                    className="comment-container"
+                                >
+                                    <img
+                                        height="30px"
+                                        src={msgs.img_url}
+                                        onError={(e) => {
+                                            e.target.src =
+                                                "/images/bubbles-prof-default.png";
+                                        }}
+                                    />
+                                    <div className="comment-text speech-bubble">
+                                        <p>
+                                            {msgs.first} {msgs.last}
+                                        </p>
+                                        <p className="white-font">
+                                            {msgs.text}
+                                        </p>
+                                        <p>
+                                            {new Date(
+                                                msgs.created_at
+                                            ).toLocaleString()}
+                                        </p>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                </div>
                 <textarea
+                    className="write-comment"
                     placeholder="Add your message here"
                     onKeyDown={keyCheck}
                 ></textarea>

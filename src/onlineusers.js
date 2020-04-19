@@ -13,11 +13,11 @@ export default function OnlineUsers() {
 
     return (
         <div className="online-users">
-            <div>See who is currently online:</div>
+            <div className="black-font">Currently online:</div>
             {onlineUsers &&
                 onlineUsers.map((user) => {
                     return (
-                        <div key={user.id}>
+                        <div key={user.id} className="online-user">
                             <img
                                 height="30px"
                                 src={user.img_url}

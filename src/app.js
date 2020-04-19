@@ -116,6 +116,7 @@ export default class App extends React.Component {
                     {this.state.uploaderIsVisible && (
                         <Uploader
                             setImgUrl={(imgUrl) => this.setImgUrl(imgUrl)}
+                            toggleModal={() => this.toggleModal()}
                         />
                     )}
                 </div>

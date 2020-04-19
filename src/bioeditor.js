@@ -40,10 +40,10 @@ export default class BioEditor extends React.Component {
                 console.log("error in post bio: ", error);
             });
     }
-    //
+
     render() {
-        console.log("this.props: ", this.props);
-        console.log("this.state: ", this.state);
+        //console.log("this.props: ", this.props);
+        //console.log("this.state: ", this.state);
 
         let editBio;
         let txtarea = (
@@ -53,6 +53,8 @@ export default class BioEditor extends React.Component {
                     onChange={(e) => {
                         this.handleChange(e);
                     }}
+                    placeholder="Tell us something about yourself..."
+                    defaultValue={this.props.bio}
                 ></textarea>
                 <button
                     className="save inside-btn"
@@ -72,7 +74,7 @@ export default class BioEditor extends React.Component {
                         className="add inside-btn"
                         onClick={() => this.toggleTextarea()}
                     >
-                        Add your bio.
+                        Add bio
                     </button>
                 </div>
             );
@@ -81,23 +83,23 @@ export default class BioEditor extends React.Component {
             this.state.bioEditorIsVisible == false
         ) {
             editBio = (
-                <div className="profile">
+                <div className="profile ">
                     {this.props.bio}
                     <button
                         className="edit inside-btn"
                         onClick={() => this.toggleTextarea()}
                     >
-                        Edit bio.
+                        Edit bio
                     </button>
                 </div>
             );
         }
 
         return (
-            <React.Fragment>
+            <div className="bio-editor">
                 {editBio}
                 {this.state.bioEditorIsVisible && txtarea}
-            </React.Fragment>
+            </div>
         );
     }
 }

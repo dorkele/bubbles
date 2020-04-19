@@ -14,10 +14,18 @@ export default function Profile({
         <React.Fragment>
             <div className="profile">
                 <div className="big-pic">
-                    <ProfilePic toggleModal={toggleModal} imgUrl={imgUrl} />
+                    <ProfilePic
+                        toggleModal={toggleModal}
+                        imgUrl={imgUrl}
+                        onError={(e) => {
+                            e.target.src = "/images/bubbles-prof-default.png";
+                        }}
+                    />
                 </div>
                 <p>
-                    {first} {last}
+                    <strong>
+                        {first} {last}
+                    </strong>
                 </p>
             </div>
             <BioEditor bio={bio} setBio={setBio} />

@@ -8,6 +8,7 @@ import {
     onlineUsers,
     userLeft,
     privateMessage,
+    privateMessages,
 } from "./actions";
 ///usedispatch in socket
 export let socket;
@@ -40,6 +41,10 @@ export const init = (store) => {
         socket.on("userleft", (user) => {
             //console.log("user left in socket.js: ", user);
             store.dispatch(userLeft(user));
+        });
+
+        socket.on("privateMessages", (msgs) => {
+            store.dispatch(privateMessages(msgs));
         });
 
         socket.on("newPrivateChatMessage", (msg) => {

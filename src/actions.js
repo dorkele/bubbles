@@ -89,13 +89,17 @@ export function userLeft(user) {
     };
 }
 
-export function privateMessage(msg) {
-    console.log(
-        "I am in actions showing new private msg hopefully who left: ",
-        msg
-    );
+export function privateMessages(privateMsgs) {
+    //console.log("I am in actions showing old private msgs hopefully: ", msgs);
+    return {
+        type: "PRIVATE_MESSAGES",
+        privateMsgs,
+    };
+}
+
+export function privateMessage(privateMsg) {
     return {
         type: "PRIVATE_MESSAGE",
-        msg,
+        privateMsg,
     };
 }

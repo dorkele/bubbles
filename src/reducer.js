@@ -80,13 +80,19 @@ export default function reducer(state = {}, action) {
         //console.log("reducer online users: state: ", state);
     }
 
+    if (action.type === "PRIVATE_MESSAGES") {
+        state = {
+            ...state,
+            privateMsgs: action.privateMsgs,
+        };
+    }
+
     if (action.type === "PRIVATE_MESSAGE") {
         //console.log("we are in reducer now showing state: ", state);
         //console.log("we are in reducer now showing action: ", action);
         state = {
             ...state,
-            ///ovo popravit s obzirom na 10last msgs
-            privateMsgs: action.msg,
+            privateMsgs: state.privateMsgs.concat(action.privateMsg),
         };
     }
 

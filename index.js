@@ -559,23 +559,25 @@ io.on("connection", function (socket) {
         }
     });
 
-    // db.getLastTenMsgs()
-    //     .then((result) => {
-    //         //console.log("result in gettenlastmsgs: ", result.rows);
-    //         io.sockets.emit("chatMessages", result.rows);
-    //     })
-    //     .catch((error) => {
-    //         console.log("error in gettenlastmsgs: ", error);
-    //     });
+    db.getPrivateMsgs(userId)
+        .then((result) => {
+            console.log("result in getPrivateMsgs: ", result.rows);
+            for (const socket in onlineUsers) {
+                if (
+                    onlineUsers[socket] == userId
+                    //|| onlineUsers[socket] == privateMsg.receiver
+                ) {
+                    console.log("socket: ", socket);
+
+                    io.to(socket).emit("privateMessages", result.rows);
+                }
+            }
+        })
+        .catch((error) => {
+            console.log("error in getPrivateMsgs: ", error);
+        });
 
     socket.on("newPrivateChatMsg", (privateMsg) => {
-        console.log(
-            "this private msg is coming from privatechat.js component: ",
-            privateMsg.newMsg
-        );
-        console.log("user who sent the mesagge: ", userId);
-        console.log("receiver of the private message: ", privateMsg.receiver);
-
         db.insertNewPrivateMsg(privateMsg.newMsg, userId, privateMsg.receiver)
             .then((result) => {
                 console.log(
@@ -584,18 +586,7 @@ io.on("connection", function (socket) {
                 );
                 db.getPrivateMessage(result.rows[0].id)
                     .then((response) => {
-                        // console.log(
-                        //     "response from getPrivateMessage: ",
-                        //     response.rows
-                        // );
-                        // console.log("onlineUsers: ", onlineUsers);
                         for (const socket in onlineUsers) {
-                            // console.log("socket: ", socket);
-                            // console.log(
-                            //     "onlineUsers[socket]: ",
-                            //     onlineUsers[socket]
-                            // );
-
                             if (
                                 onlineUsers[socket] == userId ||
                                 onlineUsers[socket] == privateMsg.receiver

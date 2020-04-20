@@ -272,15 +272,20 @@ app.get("/user/:id.json", (req, res) => {
             redirect: true,
         });
     } else {
-        db.getUserInfo(req.params.id).then((result) => {
-            //console.log("result in get user info id json: ", result.rows);
-
-            res.json(
-                result.rows || {
-                    redirect: true,
+        db.getUserInfo(req.params.id)
+            .then((result) => {
+                console.log("result in get user info id json: ", result.rows);
+                if (result.rows[0]) {
+                    res.json(result.rows);
+                } else {
+                    res.json({
+                        redirect: true,
+                    });
                 }
-            );
-        });
+            })
+            .catch((error) => {
+                console.log("error in get user info id json: ", error);
+            });
     }
 });
 
@@ -562,16 +567,7 @@ io.on("connection", function (socket) {
     db.getPrivateMsgs(userId)
         .then((result) => {
             console.log("result in getPrivateMsgs: ", result.rows);
-            for (const socket in onlineUsers) {
-                if (
-                    onlineUsers[socket] == userId
-                    //|| onlineUsers[socket] == privateMsg.receiver
-                ) {
-                    console.log("socket: ", socket);
-
-                    io.to(socket).emit("privateMessages", result.rows);
-                }
-            }
+            io.to(socket.id).emit("privateMessages", result.rows);
         })
         .catch((error) => {
             console.log("error in getPrivateMsgs: ", error);

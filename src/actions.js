@@ -90,7 +90,10 @@ export function userLeft(user) {
 }
 
 export function privateMessages(privateMsgs) {
-    //console.log("I am in actions showing old private msgs hopefully: ", msgs);
+    console.log(
+        "I am in actions showing old private msgs hopefully: ",
+        privateMsgs
+    );
     return {
         type: "PRIVATE_MESSAGES",
         privateMsgs,

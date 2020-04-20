@@ -81,18 +81,41 @@ export default function reducer(state = {}, action) {
     }
 
     if (action.type === "PRIVATE_MESSAGES") {
+        console.log("action.privateMsgs: ", action.privateMsgs);
+        console.log("state u privateMsgs: ", state);
+        let receiver = window.location.pathname.split("/").pop();
+        console.log("receiver: ", receiver);
+
         state = {
             ...state,
-            privateMsgs: action.privateMsgs,
+            privateMsgs: action.privateMsgs.filter((privateMsg) => {
+                if (
+                    privateMsg.receiver_id == receiver ||
+                    privateMsg.sender_id == receiver
+                ) {
+                    return privateMsg;
+                }
+            }),
         };
     }
 
     if (action.type === "PRIVATE_MESSAGE") {
         //console.log("we are in reducer now showing state: ", state);
         //console.log("we are in reducer now showing action: ", action);
+        let receiver = window.location.pathname.split("/").pop();
+
         state = {
             ...state,
-            privateMsgs: state.privateMsgs.concat(action.privateMsg),
+            privateMsgs: state.privateMsgs
+                .concat(action.privateMsg)
+                .filter((privateMsg) => {
+                    if (
+                        privateMsg.receiver_id == receiver ||
+                        privateMsg.sender_id == receiver
+                    ) {
+                        return privateMsg;
+                    }
+                }),
         };
     }
 

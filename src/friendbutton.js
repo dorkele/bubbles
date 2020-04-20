@@ -91,11 +91,11 @@ export default function FriendButton(props) {
     };
 
     return (
-        <div>
+        <React.Fragment>
             <button onClick={handleClick} className="inside-btn">
                 {buttonText}
             </button>
             {buttonText == "End Friendship" && <PrivateChat />}
-        </div>
+        </React.Fragment>
     );
 }

@@ -31,25 +31,32 @@ export default function Friends() {
     return (
         <React.Fragment>
             <div>
-                <p>People who want to explore your bubble:</p>
-                <div>
+                <p className="black-font">
+                    People who want to be your friends:
+                </p>
+                <div className="grid-container">
                     {wannabes &&
                         wannabes.map((wannabe) => {
                             return (
-                                <div key={wannabe.id}>
-                                    <Link to={"/user/" + wannabe.id}>
+                                <div
+                                    key={wannabe.id}
+                                    className="friends-wannabes-container"
+                                >
+                                    <div className="prof-pic">
                                         <img
+                                            className="big-pic"
                                             src={wannabe.img_url}
                                             onError={(e) => {
                                                 e.target.src =
                                                     "/images/bubbles-prof-default.png";
                                             }}
                                         />
-                                        <p>
-                                            {wannabe.first} {wannabe.last}
-                                        </p>
+                                    </div>
+                                    <Link to={"/user/" + wannabe.id}>
+                                        {wannabe.first} {wannabe.last}
                                     </Link>
                                     <button
+                                        className="friends-btn"
                                         onClick={() => {
                                             dispatch(acceptFriend(wannabe.id));
                                         }}
@@ -62,23 +69,27 @@ export default function Friends() {
                 </div>
             </div>
             <div>
-                <p>People whose bubbles you can explore:</p>
-                <div>
+                <p className="black-font">Friends:</p>
+                <div className="grid-container">
                     {friends &&
                         friends.map((friend) => {
                             return (
-                                <div key={friend.id}>
-                                    <Link to={"/user/" + friend.id}>
+                                <div
+                                    key={friend.id}
+                                    className="friends-wannabes-container"
+                                >
+                                    <div className="big-pic">
                                         <img
+                                            className="prof-pic"
                                             src={friend.img_url}
                                             onError={(e) => {
                                                 e.target.src =
                                                     "/images/bubbles-prof-default.png";
                                             }}
                                         />
-                                        <p>
-                                            {friend.first} {friend.last}
-                                        </p>
+                                    </div>
+                                    <Link to={"/user/" + friend.id}>
+                                        {friend.first} {friend.last}
                                     </Link>
                                     <button
                                         onClick={() =>

@@ -50,7 +50,6 @@ export default class Uploader extends React.Component {
                         X
                     </h1>
                     <label htmlFor="file">
-                        <h3>Change profile picture:</h3>
                         <input
                             className="file-input"
                             onChange={(e) => this.handleChange(e)}
@@ -61,7 +60,7 @@ export default class Uploader extends React.Component {
                     </label>
 
                     <button onClick={(e) => this.uploadImage(e)}>
-                        Click me!
+                        Change profile picture
                     </button>
                 </div>
             </div>

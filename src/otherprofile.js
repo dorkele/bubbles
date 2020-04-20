@@ -53,13 +53,12 @@ export default class OtherProfile extends React.Component {
                             {this.state.first} {this.state.last}
                         </strong>
                     </p>
-                    <div className="profile ">
-                        {this.state.bio}
-                        <FriendButton
-                            id={this.props.match.params.id}
-                            className="inside-btn"
-                        />
-                    </div>
+
+                    {this.state.bio}
+                    <FriendButton
+                        id={this.props.match.params.id}
+                        className="inside-btn"
+                    />
                 </div>
             </React.Fragment>
         );

@@ -83,7 +83,7 @@ app.get("/welcome", (req, res) => {
 
 app.post("/register", (req, res) => {
     //console.log("req.data: ", req.body);
-    console.log("post/register happening");
+    //console.log("post/register happening");
 
     const first = req.body.first;
     const last = req.body.last;
@@ -117,7 +117,7 @@ app.post("/register", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-    console.log("/POST LOGIN");
+    //console.log("/POST LOGIN");
     //console.log("req.body: ", req.body);
     db.getPass(req.body.email)
         .then((result) => {
@@ -154,7 +154,7 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/password/reset/start", (req, res) => {
-    console.log("i am now in POST /password/reset/start route");
+    //console.log("i am now in POST /password/reset/start route");
     //console.log("req.body: ", req.body);
     db.checkEmail(req.body.email)
         .then((result) => {
@@ -165,8 +165,8 @@ app.post("/password/reset/start", (req, res) => {
                 });
                 let email = req.body.email;
                 db.insertCode(secretCode, email)
-                    .then((response) => {
-                        console.log(response.rows);
+                    .then(() => {
+                        //console.log(response.rows);
 
                         ses.sendEmail(
                             email,
@@ -207,11 +207,11 @@ app.post("/password/reset/start", (req, res) => {
 });
 
 app.post("/password/reset/verify", (req, res) => {
-    console.log("i arrived in POST /password/reset/verify");
+    //console.log("i arrived in POST /password/reset/verify");
     //console.log("req.body.email&code: ", req.body.email, req.body.code);
     db.findCode(req.body.email)
         .then((result) => {
-            console.log(result.rows);
+            //console.log(result.rows);
             let index = result.rows.length - 1;
 
             if (result.rows[index].code == req.body.code) {
@@ -221,7 +221,7 @@ app.post("/password/reset/verify", (req, res) => {
                     .then((hashedPw) => {
                         //console.log("hashedPW", hashedPw);
                         db.updateUser(req.body.email, hashedPw)
-                            .then((result) => {
+                            .then(() => {
                                 //console.log(result.rows);
                                 res.json({ success: true });
                             })
@@ -251,7 +251,7 @@ app.post("/password/reset/verify", (req, res) => {
 });
 
 app.get("/user", (req, res) => {
-    console.log("i am in GET user route");
+    //console.log("i am in GET user route");
     //console.log("req.session.userId: ", req.session.userId);
     const id = req.session.userId;
     db.getUserInfo(id)
@@ -274,7 +274,7 @@ app.get("/user/:id.json", (req, res) => {
     } else {
         db.getUserInfo(req.params.id)
             .then((result) => {
-                console.log("result in get user info id json: ", result.rows);
+                //console.log("result in get user info id json: ", result.rows);
                 if (result.rows[0]) {
                     res.json(result.rows);
                 } else {
@@ -290,14 +290,14 @@ app.get("/user/:id.json", (req, res) => {
 });
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    console.log("i am in POST upload route");
+    //console.log("i am in POST upload route");
 
     let userId = req.session.userId;
     let imageUrl = conf.s3Url + req.file.filename;
     //console.log("imageUrl: ", imageUrl);
 
     db.addProfPic(imageUrl, userId)
-        .then((response) => {
+        .then(() => {
             //console.log("response in insert prof pic: ", response);
             res.json({
                 success: true,
@@ -310,12 +310,12 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 });
 
 app.post("/bio", (req, res) => {
-    console.log("made it to POST bio");
+    //console.log("made it to POST bio");
     //console.log("req.body u post bio: ", req.body);
     let userId = req.session.userId;
     let newBio = req.body.newBio;
     db.addBio(newBio, userId)
-        .then((response) => {
+        .then(() => {
             //console.log("response in post bio: ", response);
             res.json({
                 success: true,
@@ -328,7 +328,7 @@ app.post("/bio", (req, res) => {
 });
 
 app.get("/findusers", (req, res) => {
-    console.log("made it to GET users route");
+    //console.log("made it to GET users route");
     //console.log("req: ", req.query.val);
 
     if (req.query.val == "") {
@@ -353,7 +353,7 @@ app.get("/findusers", (req, res) => {
 });
 
 app.get("/initial-friendship-status/:id", (req, res) => {
-    console.log("made it to the GET initial friendship status route");
+    //console.log("made it to the GET initial friendship status route");
     //console.log("req.session.userId: ", req.session.userId);
     //console.log("req.params: ", req.params);
 
@@ -371,7 +371,7 @@ app.get("/initial-friendship-status/:id", (req, res) => {
 });
 
 app.post("/make-friend-request/:id", (req, res) => {
-    console.log("made it to the POST make friend request routes");
+    //console.log("made it to the POST make friend request routes");
 
     let userId = req.session.userId;
     let otherId = req.params.id;
@@ -387,12 +387,12 @@ app.post("/make-friend-request/:id", (req, res) => {
 });
 
 app.post("/end-friendship/:id", (req, res) => {
-    console.log("made it to cancel end friendship");
+    //console.log("made it to cancel end friendship");
 
     let userId = req.session.userId;
     let otherId = req.params.id;
     db.deleteFriendship(userId, otherId)
-        .then((result) => {
+        .then(() => {
             //console.log(result.rows);
             //res.json(result.rows);
             res.json(otherId);
@@ -403,11 +403,11 @@ app.post("/end-friendship/:id", (req, res) => {
 });
 
 app.post("/add-friendship/:id", (req, res) => {
-    console.log("made it to the add friendship route");
+    //console.log("made it to the add friendship route");
     let userId = req.session.userId;
     let otherId = req.params.id;
     db.addFriendship(userId, otherId)
-        .then((result) => {
+        .then(() => {
             //console.log("result in add freindship: ", result.rows);
             res.json(otherId);
         })
@@ -417,7 +417,7 @@ app.post("/add-friendship/:id", (req, res) => {
 });
 
 app.get("/friends-wannabes", (req, res) => {
-    console.log("i am in GET friends-wannabes route");
+    //console.log("i am in GET friends-wannabes route");
     let id = req.session.userId;
     db.getFriendsWannabes(id)
         .then((result) => {
@@ -430,8 +430,13 @@ app.get("/friends-wannabes", (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
+    console.log("tu sam di trebam biti");
+
     req.session = null;
-    res.redirect("*");
+    res.json({ logout: true });
+    // res.json({
+    //     redirect: true,
+    // });
 });
 
 app.get("*", (req, res) => {
@@ -469,14 +474,14 @@ io.on("connection", function (socket) {
         //console.log("this msg is coming from chat.js component: ", newMsg);
         //console.log("user who sent the mesagge: ", userId);
         db.insertNewMsg(newMsg, userId)
-            .then((result) => {
-                console.log("result in insertNewMsg: ", result.rows);
+            .then(() => {
+                //console.log("result in insertNewMsg: ", result.rows);
                 db.getMessenger(userId)
                     .then((response) => {
-                        console.log(
-                            "response from getMessenger: ",
-                            response.rows
-                        );
+                        // console.log(
+                        //     "response from getMessenger: ",
+                        //     response.rows
+                        // );
                         io.sockets.emit("chatMessage", response.rows);
                     })
                     .catch((error) =>
@@ -564,22 +569,24 @@ io.on("connection", function (socket) {
         }
     });
 
-    db.getPrivateMsgs(userId)
-        .then((result) => {
-            console.log("result in getPrivateMsgs: ", result.rows);
-            io.to(socket.id).emit("privateMessages", result.rows);
-        })
-        .catch((error) => {
-            console.log("error in getPrivateMsgs: ", error);
-        });
+    socket.on("getPrivateMessages", () => {
+        db.getPrivateMsgs(userId)
+            .then((result) => {
+                //console.log("result in getPrivateMsgs: ", result.rows);
+                io.to(socket.id).emit("privateMessages", result.rows);
+            })
+            .catch((error) => {
+                console.log("error in getPrivateMsgs: ", error);
+            });
+    });
 
     socket.on("newPrivateChatMsg", (privateMsg) => {
         db.insertNewPrivateMsg(privateMsg.newMsg, userId, privateMsg.receiver)
             .then((result) => {
-                console.log(
-                    "result in insertNewPrivateMsg: ",
-                    result.rows[0].id
-                );
+                // console.log(
+                //     "result in insertNewPrivateMsg: ",
+                //     result.rows[0].id
+                // );
                 db.getPrivateMessage(result.rows[0].id)
                     .then((response) => {
                         for (const socket in onlineUsers) {

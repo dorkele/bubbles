@@ -181,13 +181,14 @@ module.exports.insertNewPrivateMsg = (newMsg, userId, receiverId) => {
 };
 
 module.exports.getPrivateMsgs = (id) => {
-    const q = `SELECT first, last, img_url, text, privatechat.created_at, sender_id, receiver_id
+    const q = `SELECT * FROM (SELECT first, last, img_url, text, privatechat.created_at, sender_id, receiver_id
     FROM users
     JOIN privatechat
     ON users.id = sender_id
     WHERE (sender_id = $1 OR receiver_id = $1)
     ORDER BY privatechat.created_at DESC
-    LIMIT 10`;
+    LIMIT 10) as private_chat
+    ORDER BY created_at ASC`;
     const params = [id];
     return db.query(q, params);
 };

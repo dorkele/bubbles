@@ -4,7 +4,7 @@ import ProfilePic from "./profile-pic";
 import Uploader from "./uploader";
 import Logo from "./logo";
 import Profile from "./profile";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route, Link, useHistory } from "react-router-dom";
 import OtherProfile from "./otherprofile.js";
 import FindPeople from "./findpeople";
 import Friends from "./friends";
@@ -15,6 +15,7 @@ export default class App extends React.Component {
         super();
         this.state = {
             uploaderIsVisible: false,
+            logout: false,
         };
     }
 
@@ -60,8 +61,22 @@ export default class App extends React.Component {
         });
     }
 
+    logout() {
+        axios
+            .get("/logout")
+            .then(({ data }) => {
+                console.log("data: ", data);
+
+                location.replace("/welcome#/login");
+            })
+            .catch((err) => {
+                console.log("error in logout: ", err);
+            });
+    }
+
     render() {
         //console.log("this.state u render: ", this.state);
+        console.log("history: ", history);
 
         return (
             <BrowserRouter>
@@ -81,7 +96,9 @@ export default class App extends React.Component {
                                     toggleModal={() => this.toggleModal()}
                                 />
                             </div>
-                            {/* <Link to="/logout">Log Out</Link> */}
+                            <Link to="/logout" onClick={() => this.logout()}>
+                                Log Out
+                            </Link>
                             {/* </div> */}
                         </div>
                     </div>

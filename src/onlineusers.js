@@ -12,21 +12,22 @@ export default function OnlineUsers() {
     console.log("onlineUsers in onlineusers: ", onlineUsers);
 
     return (
-        <div className="online-users">
+        <div>
             <div className="black-font">Currently online:</div>
             {onlineUsers &&
                 onlineUsers.map((user) => {
                     return (
                         <div key={user.id} className="online-user">
-                            <img
-                                height="30px"
-                                src={user.img_url}
-                                onError={(e) => {
-                                    e.target.src =
-                                        "/images/bubbles-prof-default.png";
-                                }}
-                            />
-
+                            <div className="prof-pic prof-pic-online">
+                                <img
+                                    className="tiny-pic"
+                                    src={user.img_url}
+                                    onError={(e) => {
+                                        e.target.src =
+                                            "/images/bubbles-prof-default.png";
+                                    }}
+                                />
+                            </div>
                             <p>
                                 {user.first} {user.last}
                             </p>

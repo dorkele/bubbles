@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
 
 import axios from "./axios";
-// import PrivateChat from "./privatechat";
+import PrivateChat from "./privatechat";
 
 export default function FriendButton(props) {
     const [buttonText, setButtonText] = useState();
@@ -92,8 +92,10 @@ export default function FriendButton(props) {
 
     return (
         <div>
-            <button onClick={handleClick}>{buttonText}</button>
-            {/* {buttonText == "End Friendship" && <PrivateChat />} */}
+            <button onClick={handleClick} className="inside-btn">
+                {buttonText}
+            </button>
+            {buttonText == "End Friendship" && <PrivateChat />}
         </div>
     );
 }

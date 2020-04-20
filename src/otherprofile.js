@@ -40,6 +40,7 @@ export default class OtherProfile extends React.Component {
                 <div className="profile">
                     <div className="big-pic">
                         <img
+                            className="big-pic"
                             src={this.state.imgUrl}
                             onError={(e) => {
                                 e.target.src =
@@ -48,13 +49,17 @@ export default class OtherProfile extends React.Component {
                         />
                     </div>
                     <p>
-                        {this.state.first} {this.state.last}
+                        <strong>
+                            {this.state.first} {this.state.last}
+                        </strong>
                     </p>
-                    <p> {this.state.bio} </p>
-                    <FriendButton
-                        id={this.props.match.params.id}
-                        className="inside-btn"
-                    />
+                    <div className="profile ">
+                        {this.state.bio}
+                        <FriendButton
+                            id={this.props.match.params.id}
+                            className="inside-btn"
+                        />
+                    </div>
                 </div>
             </React.Fragment>
         );

@@ -171,3 +171,23 @@ module.exports.getOnlineUsers = (onlineUserIds) => {
     const params = [onlineUserIds];
     return db.query(q, params);
 };
+
+module.exports.insertNewPrivateMsg = (newMsg, userId, receiverId) => {
+    const q = `INSERT INTO privatechat (text, sender_id, receiver_id)
+    VALUES ($1, $2, $3)
+    RETURNING *`;
+    const params = [newMsg, userId, receiverId];
+    return db.query(q, params);
+};
+
+module.exports.getPrivateMessage = (messageId) => {
+    const q = `SELECT first, last, img_url, text, privatechat.created_at, sender_id, receiver_id
+    FROM users
+    JOIN privatechat
+    ON users.id = sender_id
+    WHERE privatechat.id = $1
+    ORDER BY created_at DESC
+    LIMIT 1`;
+    const params = [messageId];
+    return db.query(q, params);
+};

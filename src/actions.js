@@ -88,3 +88,14 @@ export function userLeft(user) {
         user,
     };
 }
+
+export function privateMessage(msg) {
+    console.log(
+        "I am in actions showing new private msg hopefully who left: ",
+        msg
+    );
+    return {
+        type: "PRIVATE_MESSAGE",
+        msg,
+    };
+}

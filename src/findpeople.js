@@ -41,14 +41,11 @@ export default function FindPeople() {
 
     return (
         <div className="find-friends-container">
-            <input
-                onChange={handleChange}
-                placeholder="type to find people"
-            ></input>
-            {users.map((user) => {
-                return (
-                    <div key={user.id}>
-                        <Link to={"/user/" + user.id}>
+            <input onChange={handleChange} placeholder="find people"></input>
+            <div className="grid-container">
+                {users.map((user) => {
+                    return (
+                        <div key={user.id} className="big-pic">
                             <img
                                 src={user.img_url}
                                 onError={(e) => {
@@ -57,13 +54,13 @@ export default function FindPeople() {
                                 }}
                                 className="prof-pic"
                             />
-                            <p>
+                            <Link to={"/user/" + user.id}>
                                 {user.first} {user.last}
-                            </p>
-                        </Link>
-                    </div>
-                );
-            })}
+                            </Link>
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 }

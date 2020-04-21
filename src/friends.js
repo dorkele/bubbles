@@ -28,13 +28,16 @@ export default function Friends() {
         console.log("dispatching receivefriendswannabes");
     }, []);
 
+    console.log("wannabes: ", wannabes);
     return (
         <React.Fragment>
             <div>
-                <p className="black-font">
-                    People who want to be your friends:
-                </p>
-                <div className="grid-container">
+                {wannabes && wannabes.length > 0 && (
+                    <p className="black-font title">
+                        People who want to be your friends ({wannabes.length}):
+                    </p>
+                )}
+                <div className="grid-container friends-big-container">
                     {wannabes &&
                         wannabes.map((wannabe) => {
                             return (
@@ -42,7 +45,7 @@ export default function Friends() {
                                     key={wannabe.id}
                                     className="friends-wannabes-container"
                                 >
-                                    <div className="prof-pic">
+                                    <div className="prof-pic center">
                                         <img
                                             className="big-pic"
                                             src={wannabe.img_url}
@@ -52,7 +55,10 @@ export default function Friends() {
                                             }}
                                         />
                                     </div>
-                                    <Link to={"/user/" + wannabe.id}>
+                                    <Link
+                                        to={"/user/" + wannabe.id}
+                                        className="center"
+                                    >
                                         {wannabe.first} {wannabe.last}
                                     </Link>
                                     <button
@@ -69,8 +75,12 @@ export default function Friends() {
                 </div>
             </div>
             <div>
-                <p className="black-font">Friends:</p>
-                <div className="grid-container">
+                {friends && friends.length > 0 && (
+                    <p className="black-font title">
+                        Friends ({friends.length}):
+                    </p>
+                )}
+                <div className="grid-container friends-big-container">
                     {friends &&
                         friends.map((friend) => {
                             return (
@@ -78,9 +88,9 @@ export default function Friends() {
                                     key={friend.id}
                                     className="friends-wannabes-container"
                                 >
-                                    <div className="big-pic">
+                                    <div className="prof-pic center">
                                         <img
-                                            className="prof-pic"
+                                            className="big-pic"
                                             src={friend.img_url}
                                             onError={(e) => {
                                                 e.target.src =
@@ -88,10 +98,14 @@ export default function Friends() {
                                             }}
                                         />
                                     </div>
-                                    <Link to={"/user/" + friend.id}>
+                                    <Link
+                                        to={"/user/" + friend.id}
+                                        className="center"
+                                    >
                                         {friend.first} {friend.last}
                                     </Link>
                                     <button
+                                        className="friends-btn"
                                         onClick={() =>
                                             dispatch(unfriend(friend.id))
                                         }

@@ -4,7 +4,9 @@ import axios from "./axios";
 export default class Uploader extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            error: false,
+        };
     }
     componentDidMount() {
         console.log("my uploader component mounted");
@@ -18,7 +20,6 @@ export default class Uploader extends React.Component {
             file: e.target.files[0],
         });
     }
-
     uploadImage(e) {
         console.log("I am upload image in uploader");
         e.preventDefault();
@@ -29,13 +30,17 @@ export default class Uploader extends React.Component {
         axios
             .post("/upload", formData)
             .then(({ data }) => {
-                //console.log("response from post upload. ", data.imgUrl);
+                console.log("response from post upload. ", data.imgUrl);
                 //console.log("this.props: ", this.props);
                 let imgUrl = data.imgUrl;
                 this.props.setImgUrl(imgUrl);
             })
             .catch(function (error) {
                 console.log("error in post upload: ", error);
+                //wrong = <p>OOps, something went wrong!</p>;
+                // this.setState({
+                //     error: true,
+                // });
             });
     }
 
@@ -62,6 +67,10 @@ export default class Uploader extends React.Component {
                     <button onClick={(e) => this.uploadImage(e)}>
                         Change profile picture
                     </button>
+
+                    {/* {this.state.error && (
+                        <div className="error">Oops, something went wrong!</div>
+                    )} */}
                 </div>
             </div>
         );

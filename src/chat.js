@@ -24,6 +24,7 @@ export default function Chat() {
 
     return (
         <div className="chat-online">
+            <OnlineUsers />
             <div className="chat-textarea">
                 <div className="chat-messages-container style-2" ref={elemRef}>
                     {chatMessages &&
@@ -33,22 +34,27 @@ export default function Chat() {
                                     key={msgs.id}
                                     className="comment-container"
                                 >
-                                    <img
-                                        height="30px"
-                                        src={msgs.img_url}
-                                        onError={(e) => {
-                                            e.target.src =
-                                                "/images/bubbles-prof-default.png";
-                                        }}
-                                    />
-                                    <div className="comment-text speech-bubble">
-                                        <p>
+                                    <div className="tiny-pic">
+                                        <img
+                                            className="prof-pic"
+                                            height="30px"
+                                            src={msgs.img_url}
+                                            onError={(e) => {
+                                                e.target.src =
+                                                    "/images/bubbles-prof-default.png";
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="comment-text">
+                                        <p className="black-font name-date">
                                             {msgs.first} {msgs.last}
                                         </p>
-                                        <p className="white-font">
-                                            {msgs.text}
-                                        </p>
-                                        <p>
+                                        <div className="speech-bubble">
+                                            <p className="white-font">
+                                                {msgs.text}
+                                            </p>
+                                        </div>
+                                        <p className="black-font name-date">
                                             {new Date(
                                                 msgs.created_at
                                             ).toLocaleString()}
@@ -64,7 +70,6 @@ export default function Chat() {
                     onKeyDown={keyCheck}
                 ></textarea>
             </div>
-            <OnlineUsers />
         </div>
     );
 }

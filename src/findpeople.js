@@ -45,7 +45,10 @@ export default function FindPeople() {
             <div className="grid-container">
                 {users.map((user) => {
                     return (
-                        <div key={user.id} className="big-pic">
+                        <div
+                            key={user.id}
+                            className="big-pic find-people-container"
+                        >
                             <img
                                 src={user.img_url}
                                 onError={(e) => {

@@ -45,8 +45,8 @@ export default function PrivateChat() {
     };
 
     return (
-        <div className="chat-online">
-            <OnlineUsers />
+        <div className="chat-online-private">
+            <OnlineUsers className="online-users-container" />
             <div className="chat-textarea-private">
                 <div className="chat-messages-container style-2" ref={elemRef}>
                     {privateChatMessages &&

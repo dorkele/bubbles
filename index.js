@@ -306,6 +306,9 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
         })
         .catch((error) => {
             console.log("error in insert prof pic: ", error);
+            res.json({
+                error: true,
+            });
         });
 });
 

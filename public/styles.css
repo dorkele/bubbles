@@ -25,7 +25,7 @@ img {
 }
 
 .banner {
-    height: 400px;
+    height: 380px;
     border-radius: 0%;
 }
 
@@ -254,7 +254,7 @@ button {
 
 textarea {
     height: 200px;
-    width: 100%;
+    width: 50%;
     color: black;
     font-size: 16px;
     outline: none;

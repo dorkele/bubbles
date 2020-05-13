@@ -23,7 +23,7 @@ export default function Profile({
                     />
                 </div>
                 <p>
-                    <strong>
+                    <strong className="black-font">
                         {first} {last}
                     </strong>
                 </p>

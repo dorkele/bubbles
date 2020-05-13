@@ -61,6 +61,7 @@ app.use(function (req, res, next) {
     res.cookie("mytoken", req.csrfToken());
     next();
 });
+
 app.use(express.static("public"));
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -82,9 +83,6 @@ app.get("/welcome", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-    //console.log("req.data: ", req.body);
-    //console.log("post/register happening");
-
     const first = req.body.first;
     const last = req.body.last;
     const email = req.body.email;
@@ -92,15 +90,9 @@ app.post("/register", (req, res) => {
 
     hash(password)
         .then((hashedPw) => {
-            //console.log("hashedPW", hashedPw);
-
             db.insertUser(first, last, email, hashedPw)
                 .then((result) => {
-                    //console.log(result.rows);
-
                     req.session.userId = result.rows[0].id;
-                    //console.log(req.session);
-
                     res.json({ success: true });
                 })
                 .catch((err) => {
@@ -117,19 +109,14 @@ app.post("/register", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-    //console.log("/POST LOGIN");
-    //console.log("req.body: ", req.body);
     db.getPass(req.body.email)
         .then((result) => {
             const hashedPw = result.rows[0].password;
             const password = req.body.pass;
             const id = result.rows[0].id;
-            //console.log(hashedPw, password);
-
             compare(password, hashedPw)
                 .then((matchValue) => {
                     if (matchValue == true) {
-                        //console.log("result.rows[0].id: ", result.rows[0].id);
                         req.session.userId = id;
                         res.json({
                             success: true,
@@ -154,11 +141,8 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/password/reset/start", (req, res) => {
-    //console.log("i am now in POST /password/reset/start route");
-    //console.log("req.body: ", req.body);
     db.checkEmail(req.body.email)
         .then((result) => {
-            //console.log("result in check Email: ", result.rows[0].exists);
             if (result.rows[0].exists == true) {
                 const secretCode = cryptoRandomString({
                     length: 6,
@@ -166,15 +150,12 @@ app.post("/password/reset/start", (req, res) => {
                 let email = req.body.email;
                 db.insertCode(secretCode, email)
                     .then(() => {
-                        //console.log(response.rows);
-
                         ses.sendEmail(
                             email,
                             "Bubbles Verification Code",
                             secretCode
                         )
                             .then(() => {
-                                //console.log("working!");
                                 res.json({
                                     success: true,
                                 });
@@ -207,29 +188,21 @@ app.post("/password/reset/start", (req, res) => {
 });
 
 app.post("/password/reset/verify", (req, res) => {
-    //console.log("i arrived in POST /password/reset/verify");
-    //console.log("req.body.email&code: ", req.body.email, req.body.code);
     db.findCode(req.body.email)
         .then((result) => {
-            //console.log(result.rows);
             let index = result.rows.length - 1;
-
             if (result.rows[index].code == req.body.code) {
-                //console.log("req.body.newPw: ", req.body.password);
-
                 hash(req.body.password)
                     .then((hashedPw) => {
-                        //console.log("hashedPW", hashedPw);
                         db.updateUser(req.body.email, hashedPw)
                             .then(() => {
-                                //console.log(result.rows);
                                 res.json({ success: true });
                             })
                             .catch((err) => {
+                                console.log("error in password catch: ", err);
                                 res.json({
                                     success: false,
                                 });
-                                console.log("error in password catch: ", err);
                             });
                     })
                     .catch((err) => {
@@ -251,12 +224,9 @@ app.post("/password/reset/verify", (req, res) => {
 });
 
 app.get("/user", (req, res) => {
-    //console.log("i am in GET user route");
-    //console.log("req.session.userId: ", req.session.userId);
     const id = req.session.userId;
     db.getUserInfo(id)
         .then((result) => {
-            //console.log("result.rows in getUserInfo: ", result.rows);
             res.json(result.rows);
         })
         .catch((error) => {
@@ -265,8 +235,6 @@ app.get("/user", (req, res) => {
 });
 
 app.get("/user/:id.json", (req, res) => {
-    //console.log("req.params user id json: ", req.params);
-
     if (req.params.id == req.session.userId) {
         res.json({
             redirect: true,
@@ -274,7 +242,6 @@ app.get("/user/:id.json", (req, res) => {
     } else {
         db.getUserInfo(req.params.id)
             .then((result) => {
-                //console.log("result in get user info id json: ", result.rows);
                 if (result.rows[0]) {
                     res.json(result.rows);
                 } else {
@@ -290,15 +257,11 @@ app.get("/user/:id.json", (req, res) => {
 });
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    //console.log("i am in POST upload route");
-
     let userId = req.session.userId;
     let imageUrl = conf.s3Url + req.file.filename;
-    //console.log("imageUrl: ", imageUrl);
 
     db.addProfPic(imageUrl, userId)
         .then(() => {
-            //console.log("response in insert prof pic: ", response);
             res.json({
                 success: true,
                 imgUrl: imageUrl,
@@ -313,13 +276,10 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 });
 
 app.post("/bio", (req, res) => {
-    //console.log("made it to POST bio");
-    //console.log("req.body u post bio: ", req.body);
     let userId = req.session.userId;
     let newBio = req.body.newBio;
     db.addBio(newBio, userId)
         .then(() => {
-            //console.log("response in post bio: ", response);
             res.json({
                 success: true,
                 newBio,

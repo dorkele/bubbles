@@ -4,7 +4,7 @@ import ProfilePic from "./profile-pic";
 import Uploader from "./uploader";
 import Logo from "./logo";
 import Profile from "./profile";
-import { BrowserRouter, Route, Link, useHistory } from "react-router-dom";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 import OtherProfile from "./otherprofile.js";
 import FindPeople from "./findpeople";
 import Friends from "./friends";
@@ -20,11 +20,9 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
-        //console.log("my app component has mounted!");
         axios
             .get("/user")
             .then(({ data }) => {
-                //console.log("result in cdm app: ", data[0]);
                 this.setState({
                     id: data[0].id,
                     first: data[0].first,
@@ -33,7 +31,6 @@ export default class App extends React.Component {
                     imgUrl: data[0].img_url,
                     timestamp: data[0].created_at,
                 });
-                //console.log("this.state: ", this.state);
             })
             .catch((error) => {
                 console.log("error in cdm in app: ", error);
@@ -41,14 +38,12 @@ export default class App extends React.Component {
     }
 
     toggleModal() {
-        //console.log("toggleModal is running");
         this.setState({
             uploaderIsVisible: !this.state.uploaderIsVisible,
         });
     }
 
     setImgUrl(url) {
-        //console.log("reached the parent with imgUrl:  ", url);
         this.setState({
             imgUrl: url,
             uploaderIsVisible: false,
@@ -75,9 +70,6 @@ export default class App extends React.Component {
     }
 
     render() {
-        //console.log("this.state u render: ", this.state);
-        console.log("history: ", history);
-
         return (
             <BrowserRouter>
                 <div className="app">
@@ -87,7 +79,6 @@ export default class App extends React.Component {
                             <Link to="/chat">Chat</Link>
                             <Link to="/users">Find People</Link>
                             <Link to="/friends">Friends</Link>
-                            {/* <div className="prof-log-out"> */}
                             <div className="small-pic">
                                 <ProfilePic
                                     first={this.state.first}
@@ -99,7 +90,6 @@ export default class App extends React.Component {
                             <Link to="/logout" onClick={() => this.logout()}>
                                 Log Out
                             </Link>
-                            {/* </div> */}
                         </div>
                     </div>
 

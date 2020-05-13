@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "./axios";
-import { Link } from "react-router-dom"; //je li mi ovo potrebno?
-//import { PinpointEmail } from "aws-sdk";
+import { Link } from "react-router-dom";
 
 export default class ResetPassword extends React.Component {
     constructor(props) {
@@ -18,19 +17,16 @@ export default class ResetPassword extends React.Component {
     }
 
     submitEmail(e) {
-        console.log("i clicked a button to submit email");
-        console.log("this.state.email: ", this.state.email);
         e.preventDefault();
         axios
             .post("/password/reset/start", {
                 email: this.state.email,
             })
             .then(({ data }) => {
-                console.log("data: ", data);
-
                 if (data.success) {
                     this.setState({
                         step: "code",
+                        error: false,
                     });
                 } else {
                     this.setState({
@@ -47,7 +43,6 @@ export default class ResetPassword extends React.Component {
     }
 
     verifyCode(e) {
-        console.log("i clicked verify button");
         e.preventDefault();
         axios
             .post("/password/reset/verify", {
@@ -81,7 +76,6 @@ export default class ResetPassword extends React.Component {
         if (step == "email") {
             reset = (
                 <div className="form">
-                    {/* probati ovo sto se ponavlja maknuti iz onoga sto se mijenja */}
                     <p className="reset-pass">Reset Password</p>
                     {this.state.error && (
                         <div className="error">Oops, something went wrong!</div>
@@ -104,7 +98,6 @@ export default class ResetPassword extends React.Component {
                         <div className="error">Oops, something went wrong!</div>
                     )}
                     <p>Please enter the verification code:</p>
-
                     <input
                         name="code"
                         key="code"
@@ -125,7 +118,7 @@ export default class ResetPassword extends React.Component {
         } else if (step == "success") {
             reset = (
                 <div className="form">
-                    <p className="reset-pass">Success!</p>
+                    <p className="reset-pass black-font">Success!</p>
                     <p>
                         You can now <Link to="/login">log in</Link> with your
                         new password.

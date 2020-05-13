@@ -15,7 +15,6 @@ export default class Login extends React.Component {
     }
 
     login() {
-        console.log("button was clicked");
         axios
             .post("/login", {
                 email: this.state.email,
@@ -30,8 +29,7 @@ export default class Login extends React.Component {
                     });
                 }
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
                 this.setState({
                     error: true,
                 });
@@ -41,7 +39,9 @@ export default class Login extends React.Component {
     render() {
         return (
             <div className="form">
-                {this.state.error && <div>Oops, something went wrong!</div>}
+                {this.state.error && (
+                    <div className="error">Oops, something went wrong!</div>
+                )}
                 <input
                     name="email"
                     placeholder="email"

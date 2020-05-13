@@ -17,7 +17,6 @@ export default class BioEditor extends React.Component {
     }
 
     handleChange({ target }) {
-        console.log("textarea.value", target.value);
         this.setState({
             bioInProgress: target.value,
         });
@@ -25,11 +24,9 @@ export default class BioEditor extends React.Component {
 
     updateBio(e) {
         e.preventDefault();
-        console.log("about to make post request", this.state.bioInProgress);
         axios
             .post("/bio", { newBio: this.state.bioInProgress })
             .then(({ data }) => {
-                console.log("response in post bio: ", data.newBio);
                 let newBio = data.newBio;
                 this.props.setBio(newBio);
                 this.setState({
@@ -42,9 +39,6 @@ export default class BioEditor extends React.Component {
     }
 
     render() {
-        //console.log("this.props: ", this.props);
-        //console.log("this.state: ", this.state);
-
         let editBio;
         let txtarea = (
             <div className="profile">
@@ -55,7 +49,7 @@ export default class BioEditor extends React.Component {
                     }}
                     placeholder="Tell us something about yourself..."
                     defaultValue={this.props.bio}
-                ></textarea>
+                />
                 <button
                     className="save inside-btn"
                     onClick={(e) => this.updateBio(e)}
@@ -64,6 +58,7 @@ export default class BioEditor extends React.Component {
                 </button>
             </div>
         );
+
         if (
             (this.props.bio == undefined || this.props.bio == "") &&
             this.state.bioEditorIsVisible == false

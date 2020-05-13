@@ -15,7 +15,6 @@ export default class Registration extends React.Component {
     }
 
     register() {
-        console.log("button was clicked");
         axios
             .post("/register", {
                 first: this.state.first,
@@ -32,8 +31,7 @@ export default class Registration extends React.Component {
                     });
                 }
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
                 this.setState({
                     error: true,
                 });

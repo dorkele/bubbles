@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "./axios";
 import FriendButton from "./friendbutton.js";
-//import PrivateChat from "./privatechat";
 
 export default class OtherProfile extends React.Component {
     constructor(props) {
@@ -10,16 +9,11 @@ export default class OtherProfile extends React.Component {
     }
     componentDidMount() {
         const id = this.props.match.params.id;
-        console.log("this.props.match.params: ", this.props.match.params);
 
         axios
             .get(`/user/${id}.json`)
             .then(({ data }) => {
-                console.log("data in GET user id json: ", data[0]);
-
                 if (data.redirect) {
-                    console.log("REDIRECT!!!!!!!!");
-
                     this.props.history.push("/");
                 } else {
                     this.setState({
@@ -49,7 +43,7 @@ export default class OtherProfile extends React.Component {
                         />
                     </div>
                     <p>
-                        <strong>
+                        <strong className="black-font">
                             {this.state.first} {this.state.last}
                         </strong>
                     </p>

@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
-
 import axios from "./axios";
 import PrivateChat from "./privatechat";
 
 export default function FriendButton(props) {
     const [buttonText, setButtonText] = useState();
-    console.log("props in friendbutton: ", props);
 
     useEffect(() => {
         axios
@@ -14,8 +11,6 @@ export default function FriendButton(props) {
                 params: { id: props.id },
             })
             .then((response) => {
-                console.log("response when comp mounts initial: ", response);
-
                 if (response.data.length == 0) {
                     setButtonText("Send Friend Request");
                 } else if (
@@ -38,7 +33,6 @@ export default function FriendButton(props) {
     }, []);
 
     const handleClick = (e) => {
-        console.log("buttonText: ", buttonText);
         e.preventDefault();
         if (buttonText == "Send Friend Request") {
             axios
@@ -46,10 +40,6 @@ export default function FriendButton(props) {
                     params: { id: props.id },
                 })
                 .then((response) => {
-                    console.log(
-                        "response from make friend request: ",
-                        response
-                    );
                     if (response.data[0].accepted == false) {
                         setButtonText("Cancel Friend Request");
                     }
@@ -65,11 +55,7 @@ export default function FriendButton(props) {
                 .post(`/end-friendship/${props.id}`, {
                     params: { id: props.id },
                 })
-                .then((response) => {
-                    console.log(
-                        "response in cancel end friendship: ",
-                        response.data
-                    );
+                .then(() => {
                     setButtonText("Send Friend Request");
                 })
                 .catch((error) => {
@@ -80,8 +66,7 @@ export default function FriendButton(props) {
                 .post(`/add-friendship/${props.id}`, {
                     params: { id: props.id },
                 })
-                .then((response) => {
-                    console.log("response in add friendship: ", response.data);
+                .then(() => {
                     setButtonText("End Friendship");
                 })
                 .catch((error) => {

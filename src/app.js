@@ -59,9 +59,7 @@ export default class App extends React.Component {
     logout() {
         axios
             .get("/logout")
-            .then(({ data }) => {
-                console.log("data: ", data);
-
+            .then(() => {
                 location.replace("/welcome#/login");
             })
             .catch((err) => {

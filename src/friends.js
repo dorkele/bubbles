@@ -7,7 +7,6 @@ export default function Friends() {
     const dispatch = useDispatch();
 
     let friends = useSelector((state) => {
-        //console.log("state.friendsWannabes: ", state.friendsWannabes);
         return (
             state.friendsWannabes &&
             state.friendsWannabes.filter((friend) => friend.accepted === true)
@@ -25,10 +24,8 @@ export default function Friends() {
 
     useEffect(() => {
         dispatch(receiveFriendsWannabes());
-        console.log("dispatching receivefriendswannabes");
     }, []);
 
-    console.log("wannabes: ", wannabes);
     return (
         <React.Fragment>
             <div>
@@ -37,7 +34,7 @@ export default function Friends() {
                         People who want to be your friends ({wannabes.length}):
                     </p>
                 )}
-                <div className="grid-container friends-big-container">
+                <div className="grid-container-five">
                     {wannabes &&
                         wannabes.map((wannabe) => {
                             return (
@@ -80,7 +77,7 @@ export default function Friends() {
                         Friends ({friends.length}):
                     </p>
                 )}
-                <div className="grid-container friends-big-container">
+                <div className="grid-container-five">
                     {friends &&
                         friends.map((friend) => {
                             return (

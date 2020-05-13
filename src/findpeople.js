@@ -7,18 +7,10 @@ export default function FindPeople() {
     const [input, setInput] = useState("");
 
     useEffect(() => {
-        console.log("results for input");
-        console.log("input: ", input);
-
         let cleanup = false;
         axios
-            .get("/findusers", { params: { val: input } }) /////shvatiti route
+            .get("/findusers", { params: { val: input } })
             .then((response) => {
-                console.log(
-                    "response in useeffect matching people component: ",
-                    response.data
-                );
-
                 if (!cleanup) {
                     setUsers(response.data);
                 }
@@ -50,11 +42,10 @@ export default function FindPeople() {
                             className="big-pic find-people-container"
                         >
                             <img
-                                src={user.img_url}
-                                onError={(e) => {
-                                    e.target.src =
-                                        "/images/bubbles-prof-default.png";
-                                }}
+                                src={
+                                    user.img_url ||
+                                    "/images/bubbles-prof-default.png"
+                                }
                                 className="prof-pic"
                             />
                             <Link to={"/user/" + user.id}>

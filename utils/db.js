@@ -74,17 +74,20 @@ module.exports.addBio = (newBio, id) => {
     return db.query(q, params);
 };
 
-module.exports.getLastUsers = () => {
+module.exports.getLastUsers = (id) => {
     const q = `SELECT * FROM users
+     WHERE id != $1
      ORDER BY created_at DESC 
      LIMIT 3;`;
-    return db.query(q);
+    const params = [id];
+    return db.query(q, params);
 };
 
-module.exports.getMatchingUsers = (val) => {
+module.exports.getMatchingUsers = (val, id) => {
     const q = `SELECT * FROM users 
-    WHERE first ILIKE $1`;
-    const params = [val + "%"];
+    WHERE first ILIKE $1
+    AND id != $2`;
+    const params = [val + "%", id];
     return db.query(q, params);
 };
 

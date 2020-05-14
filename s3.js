@@ -3,9 +3,9 @@ const fs = require("fs");
 
 let secrets;
 if (process.env.NODE_ENV == "production") {
-    secrets = process.env; // in prod the secrets are environment variables
+    secrets = process.env;
 } else {
-    secrets = require("./secrets"); // in dev they are in secrets.json which is listed in .gitignore
+    secrets = require("./secrets");
 }
 
 const s3 = new aws.S3({
@@ -16,7 +16,7 @@ const s3 = new aws.S3({
 exports.upload = function (req, res, next) {
     if (!req.file) {
         console.log("Multer did not work");
-        res.sendStatus(500);
+        res.json({ error: true });
         return;
     }
     const { filename, mimetype, size, path } = req.file;
@@ -35,12 +35,9 @@ exports.upload = function (req, res, next) {
         .then(() => {
             console.log("it worked!!!");
             next();
-            //fs.unlink(path, () => {}) //for deleting images when they are uploaded
         })
         .catch((err) => {
-            // uh oh
             console.log(err);
-
-            res.sendStatus(500);
+            res.json({ error: true });
         });
 };

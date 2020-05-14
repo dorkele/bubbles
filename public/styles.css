@@ -178,7 +178,7 @@ button {
 .chat-online {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     margin-top: 5%;
     margin-left: 10%;
 }
@@ -186,8 +186,9 @@ button {
 .chat-online-private {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 80%;
+    margin-left: 10%;
 }
 
 .black-font {
@@ -215,12 +216,14 @@ button {
     display: flex;
     flex-direction: column;
     width: 70%;
+    align-self: center;
 }
 
 .chat-textarea-private {
     display: flex;
     flex-direction: column;
     width: 100%;
+    align-self: center;
 }
 
 .comment-container {
@@ -264,7 +267,7 @@ textarea {
 
 .write-comment {
     height: 100px;
-    width: 50%;
+    width: 70%;
     color: black;
     font-size: 16px;
     outline: none;
@@ -309,6 +312,7 @@ textarea {
 
 .file-input {
     border: none;
+    border-radius: 0;
 }
 
 label {

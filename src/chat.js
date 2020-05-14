@@ -7,8 +7,6 @@ export default function Chat() {
     const elemRef = useRef();
     const chatMessages = useSelector((state) => state && state.msgs);
 
-    console.log("last 10msgs: ", chatMessages);
-
     useEffect(() => {
         elemRef.current.scrollTop =
             elemRef.current.scrollHeight - elemRef.current.clientHeight;

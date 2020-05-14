@@ -25,8 +25,7 @@ export default class Uploader extends React.Component {
                 let imgUrl = data.imgUrl;
                 this.props.setImgUrl(imgUrl);
             })
-            .catch(function (error) {
-                console.log("error in post upload: ", error);
+            .catch(() => {
                 this.setState({
                     error: true,
                 });
@@ -43,7 +42,12 @@ export default class Uploader extends React.Component {
                     >
                         X
                     </h1>
-                    {this.error && <p>OOps, something went wrong!</p>}
+                    {this.state.error && (
+                        <p className="error">
+                            OOps, something went wrong! Make sure the size of
+                            your image is less than 2MB and try again!
+                        </p>
+                    )}
 
                     <input
                         className="file-input"

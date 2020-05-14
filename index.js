@@ -400,7 +400,6 @@ io.on("connection", function (socket) {
 
     db.getLastTenMsgs()
         .then((result) => {
-            //console.log("result in gettenlastmsgs: ", result.rows);
             io.sockets.emit("chatMessages", result.rows);
         })
         .catch((error) => {
@@ -408,17 +407,10 @@ io.on("connection", function (socket) {
         });
 
     socket.on("newChatMsg", (newMsg) => {
-        //console.log("this msg is coming from chat.js component: ", newMsg);
-        //console.log("user who sent the mesagge: ", userId);
         db.insertNewMsg(newMsg, userId)
             .then(() => {
-                //console.log("result in insertNewMsg: ", result.rows);
                 db.getMessenger(userId)
                     .then((response) => {
-                        // console.log(
-                        //     "response from getMessenger: ",
-                        //     response.rows
-                        // );
                         io.sockets.emit("chatMessage", response.rows);
                     })
                     .catch((error) =>
@@ -431,25 +423,19 @@ io.on("connection", function (socket) {
     });
 
     onlineUsers[socket.id] = userId;
-    //socket.on("connect", (socket) => {
+
     let userCount = 0;
     for (const socket in onlineUsers) {
-        //console.log("onlineUsers[socket]: ", onlineUsers[socket]);
-        //console.log(userId);
-
         if (onlineUsers[socket] == userId) {
             userCount++;
         }
     }
 
     if (userCount > 1) {
-        console.log("we already have that one");
-        //return;
+        return;
     } else {
-        //console.log("good time for a db?");
         db.getUserInfo(userId)
             .then((response) => {
-                //console.log("response.rows before userjoined: ", response.rows);
                 io.sockets.sockets[socket.id].broadcast.emit(
                     "userjoined",
                     response.rows
@@ -459,49 +445,36 @@ io.on("connection", function (socket) {
                 console.log("error in userjoined: ", error);
             });
     }
-    //console.log("online users: ", onlineUsers);
-    //});
 
     let onlineUserIds = [];
 
-    //socket.on("connect", (socket) => {
     for (const socket in onlineUsers) {
         onlineUserIds.push(onlineUsers[socket]);
     }
 
     db.getOnlineUsers(onlineUserIds)
         .then((response) => {
-            //console.log("response from get online users: ", response.rows);
             io.sockets.sockets[socket.id].emit("onlineusers", response.rows);
         })
         .catch((error) => {
             console.log("error in get online users: ", error);
         });
-    //});
 
     socket.on("disconnect", () => {
-        // emit userLeft here
         console.log(`socket with the ${socket.id} is now disconnected`);
 
         delete onlineUsers[socket.id];
-        //console.log("onlineUsers: ", onlineUsers);
 
         let userCheck = 0;
         for (const socket in onlineUsers) {
-            // console.log("onlineUsers[socket]", onlineUsers[socket]);
-            // console.log("userId: ", userId);
-
             if (onlineUsers[socket] == userId) {
                 userCheck++;
             }
         }
-        //console.log("userCheck: ", userCheck);
 
         if (userCheck > 0) {
-            //console.log("log nesto umjesto return");
             return;
         } else {
-            // console.log("ulazim u else iako ne bih trebao");
             io.sockets.emit("userleft", userId);
         }
     });
@@ -509,7 +482,6 @@ io.on("connection", function (socket) {
     socket.on("getPrivateMessages", () => {
         db.getPrivateMsgs(userId)
             .then((result) => {
-                //console.log("result in getPrivateMsgs: ", result.rows);
                 io.to(socket.id).emit("privateMessages", result.rows);
             })
             .catch((error) => {
@@ -520,10 +492,6 @@ io.on("connection", function (socket) {
     socket.on("newPrivateChatMsg", (privateMsg) => {
         db.insertNewPrivateMsg(privateMsg.newMsg, userId, privateMsg.receiver)
             .then((result) => {
-                // console.log(
-                //     "result in insertNewPrivateMsg: ",
-                //     result.rows[0].id
-                // );
                 db.getPrivateMessage(result.rows[0].id)
                     .then((response) => {
                         for (const socket in onlineUsers) {
@@ -545,6 +513,4 @@ io.on("connection", function (socket) {
                 console.log("error in insertnewMsg: ", error);
             });
     });
-
-    //});
 });

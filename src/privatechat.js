@@ -6,7 +6,6 @@ import OnlineUsers from "./onlineusers";
 export default function PrivateChat() {
     const elemRef = useRef();
     let receiver = window.location.pathname.split("/").pop();
-    console.log("receiver: ", receiver);
 
     const privateChatMessages = useSelector(
         (state) =>
@@ -22,8 +21,6 @@ export default function PrivateChat() {
             })
     );
 
-    console.log("sto je stiglo do nas u private chate: ", privateChatMessages);
-
     useEffect(() => {
         elemRef.current.scrollTop =
             elemRef.current.scrollHeight - elemRef.current.clientHeight;
@@ -32,12 +29,10 @@ export default function PrivateChat() {
 
     const keyCheck = (e) => {
         if (e.key === "Enter") {
-            //console.log("window.location.pathname: ", window.location.pathname);
             let newMessage = {
                 receiver: receiver,
                 newMsg: e.target.value,
             };
-            console.log("receiver: ", newMessage);
             e.preventDefault();
             socket.emit("newPrivateChatMsg", newMessage);
             e.target.value = "";
@@ -46,8 +41,8 @@ export default function PrivateChat() {
 
     return (
         <div className="chat-online-private">
-            <OnlineUsers className="online-users-container" />
-            <div className="chat-textarea-private">
+            <OnlineUsers />
+            <div className="chat-textarea">
                 <div className="chat-messages-container style-2" ref={elemRef}>
                     {privateChatMessages &&
                         privateChatMessages.map((msgs) => {

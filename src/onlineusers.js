@@ -1,15 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 
 export default function OnlineUsers() {
-    //let onlineUsers = [];
     let onlineUsers = useSelector((state) => {
-        console.log("state: ", state);
         return state && state.users;
     });
-
-    useEffect(() => {}, [onlineUsers]);
-    console.log("onlineUsers in onlineusers: ", onlineUsers);
 
     return (
         <div>

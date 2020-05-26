@@ -10,7 +10,9 @@ const s3 = require("./s3");
 const conf = require("./config");
 ////socket.io code////
 const server = require("http").Server(app);
-const io = require("socket.io")(server, { origins: "localhost:8080" }); ///if deploying alter this with url of website
+const io = require("socket.io")(server, {
+    origins: "localhost:8080" || "https://burstyourbubble.herokuapp.com/",
+}); ///if deploying alter this with url of website
 
 //////////FILE UPLOAD///////////
 const multer = require("multer");

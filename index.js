@@ -12,7 +12,7 @@ const conf = require("./config");
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
     origins: "localhost:8080 https://burstyourbubble.herokuapp.com:*",
-}); ///if deploying alter this with url of website
+});
 
 //////////FILE UPLOAD///////////
 const multer = require("multer");

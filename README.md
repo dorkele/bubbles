@@ -50,7 +50,7 @@ They can see who is online and participate in group chat or chat privately with 
 
 ## Explore on your own
 
-...
+[Bubbles on Heroku](https://burstyourbubble.herokuapp.com/)
 
 ## Future Features
 

@@ -11,7 +11,7 @@ const conf = require("./config");
 ////socket.io code////
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
-    origins: "www.burstyourbubble.herokuapp.com",
+    origins: "localhost:8080 https://burstyourbubble.herokuapp.com:*",
 }); ///if deploying alter this with url of website
 
 //////////FILE UPLOAD///////////
